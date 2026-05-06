@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | تصنيفات النخبة</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+</head>
+
+<body oncontextmenu="return false;">
+
+
+    <div class="main-layout">
+        <header class="top-nav-brand">
+            <button class="header-icon-btn side-btn" onclick="window.location.href='index.html'">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <div class="brand-small">نخبة <span>التجار</span></div>
+
+            <button class="header-icon-btn side-btn" onclick="window.location.href='ranks.html'">
+    <i class="fas fa-trophy"></i>
+</button>
+        </header>
+
+        <div class="tabs-scroll-area">
+            <button class="tab-btn active" onclick="switchCategory('most-ordered', this)">الأكثر طلباً</button>
+            <button class="tab-btn" onclick="switchCategory('most-spent', this)">الأكثر إنفاقاً</button>
+            <!-- القيمة القديمة: 'most-referred' -->
+<!-- القيمة الصحيحة: 'most-referrals' -->
+<button class="tab-btn" onclick="switchCategory('most-referrals', this)">الأكثر إحالة</button>
+        </div>
+
+        <main class="store-front">
+            <div class="merchants-list-vertical" id="merchantsList">
+                </div>
+        </main>
+    </div>
+    
+
+    <!-- الترتيب مهم جداً -->
+<script src="merchants.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>

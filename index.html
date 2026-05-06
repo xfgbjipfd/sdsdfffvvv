@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | الأقسام الرئيسية</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* تنسيق القائمة العمودية بخطوط فاصلة */
+        .categories-list-vertical {
+            display: flex;
+            flex-direction: column;
+            padding: 0 10px;
+            background: transparent;
+        }
+
+        .category-row-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 5px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            /* إضافة خط فاصل تحت كل قسم عدا الأخير */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .category-row-card:last-child {
+            border-bottom: none;
+        }
+
+        .category-row-card:active {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .category-icon-box {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+        }
+
+        .category-icon-box i {
+            font-size: 22px;
+            color: #00bfff;
+        }
+
+        .category-info {
+            flex-grow: 1;
+        }
+
+        .category-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+        }
+
+        .category-info p {
+            font-size: 11px;
+            color: #777;
+            margin: 3px 0 0 0;
+        }
+
+        .arrow-indicator {
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 12px;
+        }
+
+        /* تحسين مساحة المحتوى */
+        .store-front {
+            padding-top: 10px;
+        }
+    </style>
+</head>
+
+<body oncontextmenu="return false;">
+
+    <div class="main-layout">
+        <!-- الهيدر العلوي -->
+        <header class="top-nav-brand">
+            <button class="header-icon-btn side-btn" onclick="toggleMenu()">
+    <i class="fas fa-bars"></i>
+</button>
+
+            <div class="brand-small">Sky<span>post</span></div>
+
+            <button class="header-icon-btn side-btn" onclick="window.location.href='https://t.me/Skybo_sub'">
+                <i class="fas fa-headset"></i>
+            </button> 
+        </header>
+
+        <!-- نظام سلايدر الإعلانات -->
+        <div class="ads-container">
+            <div class="ads-wrapper">
+                <div class="ad-slide">
+                    <img src="https://i.ibb.co/zVXPBWNJ/image.jpg" alt="عرض خاص">
+                    <div class="ad-overlay">
+                        <span class="ad-tag">عرض محدود</span>
+                        <h3>خصم 20% على خدمات الرشق</h3>
+                    </div>
+                </div>
+                <div class="ad-slide">
+                    <img src="https://i.ibb.co/HTyqzc3n/image.jpg" alt="شحن ألعاب">
+                </div>
+                <div class="ad-slide">
+                    <img src="https://i.ibb.co/FkdzxMG0/image.jpg" alt="توثيق">
+                    <div class="ad-overlay">
+                        <span class="ad-tag">رائج</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ad-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+
+        <!-- شريط البحث والرصيد -->
+        <header class="top-nav search-header-row">
+            <!-- حاوية الرصيد بالكامل أصبحت قابلة للضغط -->
+<div class="wallet-wrapper mini-wallet clickable-balance" onclick="window.location.href='add-balance.html'">
+    <span class="wallet-balance">0.00$</span>
+    <button class="add-balance-btn">
+        <i class="fas fa-plus"></i>
+    </button>
+</div>
+
+            <div class="search-bar-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="ابحث عن قسم أو خدمة..." id="mainSearchInput">
+            </div>
+        </header>
+
+        <!-- القائمة العمودية للأقسام -->
+        <main class="store-front">
+            <div class="categories-list-vertical">
+                
+                <!-- قسم خدمات الرشق -->
+                <div class="category-row-card" onclick="window.location.href='/Lists?cat=social'">
+                    <div class="category-icon-box">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>خدمات الرشق والمتابعين</h3>
+                        <p>انستغرام، تيك توك، تليجرام، فيسبوك</p>
+                    </div>
+                    <div class="arrow-indicator"><i class="fas fa-chevron-left"></i></div>
+                </div>
+
+                <!-- قسم شحن الألعاب -->
+                <div class="category-row-card" onclick="window.location.href='/Lists?cat=games'">
+                    <div class="category-icon-box">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>شحن الألعاب الرقمية</h3>
+                        <p>ببجي، يلا لودو، كلاش، موبايل ليجيند</p>
+                    </div>
+                    <div class="arrow-indicator"><i class="fas fa-chevron-left"></i></div>
+                </div>
+
+                <!-- قسم الأرقام الدولية -->
+                <div class="category-row-card" onclick="window.location.href='/Lists?cat=numbers'">
+                    <div class="category-icon-box">
+                        <i class="fas fa-sms"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>أرقام تفعيل دولية</h3>
+                        <p>أمريكا، بريطانيا، ألمانيا وكافة الدول</p>
+                    </div>
+                    <div class="arrow-indicator"><i class="fas fa-chevron-left"></i></div>
+                </div>
+
+                <!-- قسم الاشتراكات والتوثيق -->
+                <div class="category-row-card" onclick="window.location.href='/Lists?cat=subs'">
+                    <div class="category-icon-box">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>اشتراكات وتوثيق الحسابات</h3>
+                        <p>تليجرام بريميوم، توثيق العلامة الزرقاء</p>
+                    </div>
+                    <div class="arrow-indicator"><i class="fas fa-chevron-left"></i></div>
+                </div>
+
+                <!-- قسم استرجاع الحسابات -->
+                <div class="category-row-card" onclick="window.location.href='/Lists?cat=recovery'">
+                    <div class="category-icon-box">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>استرجاع الحسابات المعطلة</h3>
+                        <p>فك حظر واسترداد حسابات التواصل الاجتماعي</p>
+                    </div>
+                    <div class="arrow-indicator"><i class="fas fa-chevron-left"></i></div>
+                </div>
+                <!-- قسم البطاقات ورموز الاسترداد -->
+<div class="category-row-card" onclick="window.location.href='/Lists?cat=cards'">
+    <div class="category-icon-box">
+        <i class="fas fa-ticket-alt"></i>
+    </div>
+    <div class="category-info">
+        <h3>البطاقات ورموز الاسترداد</h3>
+        <p>بطاقات جوجل بلاي، آيتونز، وبطاقات الهدايا</p>
+    </div>
+    <div class="arrow-indicator"><i class="fas fa-chevron-left"></i></div>
+</div>
+
+            </div>
+        </main>
+    </div>
+
+  
+
+    <script src="main.js"></script>
+    <script src="search.js"></script>
+    
+<!-- القائمة الجانبية -->
+<div id="sideMenu" class="side-menu">
+    <div class="menu-header">
+        <div class="brand-small">Sky<span>post</span></div>
+        <button class="close-menu" onclick="toggleMenu()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div class="menu-items">
+        <a href="index.html"><i class="fas fa-home"></i> الرئيسية</a>
+
+        <!-- تعديل الرابط ليوجه إلى صفحة add-balance.html -->
+<a href="add-balance.html">
+    <i class="fas fa-wallet"></i> شحن الرصيد
+</a>
+<a href="referral.html">
+    <i class="fas fa-coins"></i> برنامج الإحالة
+</a>
+        <a href="orders.html"><i class="fas fa-box"></i> طلباتي</a>
+
+        
+
+        <!-- زر API -->
+        <a href="api.html">
+    <i class="fas fa-plug"></i> APIs
+</a>
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.05); margin: 10px 0;">
+
+        <a href="https://t.me/Skybo_sub"><i class="fas fa-headset"></i> الدعم الفني</a>
+        
+    </div>
+</div>
+
+<div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div> 
+</body>
+</html>

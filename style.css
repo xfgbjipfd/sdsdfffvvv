@@ -1,0 +1,923 @@
+/* 
+   Project: Skypost Store UI - Professional Edition
+   Theme: Royal Black & Neon Blue (Glassmorphism)
+   Author: OQAB Design System[cite: 1]
+*/
+
+/* --- 1. التأسيس والمتغيرات (Variables & Base) --- */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+
+:root {
+    --accent: #00bfff;
+    --accent-soft: rgba(0, 191, 255, 0.15);
+    --bg-dark: #000000;
+    --bg-card: rgba(20, 20, 20, 0.6);
+    --glass: rgba(255, 255, 255, 0.05);
+    --border: rgba(255, 255, 255, 0.08);
+    --text-main: #ffffff;
+    --text-muted: #8b95a7;
+    --cairo-font: 'Cairo', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--cairo-font);
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+    direction: rtl;
+}
+
+/* --- 2. المؤثرات البصرية (Neon Glows) --- */
+body::before, body::after {
+    content: '';
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(0, 191, 255, 0.1);
+    filter: blur(100px);
+    z-index: -1;
+}
+body::before { top: -50px; right: -50px; }
+body::after { bottom: -50px; left: -50px; }
+
+/* --- 3. الهيكل العام (Layout) --- */
+.main-layout, .list-container {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    padding: 0 10px 90px 10px !important;
+    box-sizing: border-box !important;
+}
+
+.vertical-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* --- 4. الهيدر والتنقل العلوي (Navigation & Header) --- */
+.top-nav-brand {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px !important;
+    position: relative;
+}
+
+.brand-small {
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 1px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+.brand-small span { color: var(--accent); }
+
+.header-icon-btn.side-btn {
+    width: 38px;
+    height: 38px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(0, 191, 255, 0.3);
+    border-radius: 12px;
+    color: var(--accent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+}
+
+/* الحاوية العامة للصف العلوي */
+.search-header-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+    padding: 0 5px;
+}
+
+/* حاوية البحث فقط */
+.search-bar-container {
+    flex: 1;
+    position: relative;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+}
+
+/* حقل الإدخال */
+.search-bar-container input {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 13px;
+    width: 100%;
+    outline: none;
+}
+.search-bar-container i {
+    margin-left: 6px;
+} 
+        /* تحسينات إضافية لتناسب "تصنيف التجار" مع الهوية البصرية */
+        .merchants-list-vertical {
+            display: flex;
+            flex-direction: column;
+            padding: 0 10px;
+            background: transparent;
+        }
+
+        .merchant-row-item {
+            display: flex;
+            align-items: center;
+            padding: 15px 5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: 0.3s;
+        }
+
+        .merchant-row-item:last-child {
+            border-bottom: none;
+        }
+
+        .merchant-avatar-wrapper {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(45deg, var(--accent), transparent);
+            margin-left: 15px;
+        }
+
+        .merchant-avatar-wrapper img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #000;
+        }
+
+        .merchant-main-info {
+            flex-grow: 1;
+        }
+
+        .merchant-main-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* وسام التحقق للتجار */
+        .verify-badge {
+            color: var(--accent);
+            font-size: 12px;
+        }
+
+        .merchant-main-info p {
+            font-size: 11px;
+            color: #777;
+            margin: 3px 0 0 0;
+        }
+
+        .rank-number-box {
+            text-align: center;
+            min-width: 40px;
+        }
+
+        .rank-val {
+            display: block;
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .rank-label {
+            font-size: 8px;
+            color: #555;
+            text-transform: uppercase;
+        }
+
+        /* تنسيق أزرار التبديل لتناسب style.css */
+        .tabs-scroll-area {
+            display: flex;
+            gap: 10px;
+            padding: 15px 10px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .tab-btn {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+/* حاوية الرصيد (منفصلة تماماً عن البحث) */
+.balance-container {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 13px;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.wallet-wrapper.mini-wallet {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 191, 255, 0.08);
+    padding: 5px 10px;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 191, 255, 0.2);
+    height: 40px;
+}
+
+.wallet-balance { color: var(--accent); font-weight: 800; font-size: 13px; }
+
+.add-balance-btn {
+    width: 18px;
+    height: 18px;
+    background: var(--accent);
+    color: #000;
+    border-radius: 50%;
+    border: none;
+    font-size: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* --- 5. سلايدر الإعلانات (Ads System) --- */
+.ads-container {
+    width: 100%;
+    position: relative;
+    margin-bottom: 25px;
+    overflow: hidden;
+    border-radius: 20px;
+    direction: ltr; 
+}
+
+.ads-wrapper {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: transform;
+}
+
+.ad-slide {
+    min-width: 100%;
+    height: 170px;
+    position: relative;
+    direction: rtl; 
+}
+
+.ad-slide img { width: 100%; height: 100%; object-fit: cover; }
+
+.ad-overlay {
+    position: absolute;
+    bottom: 0; right: 0; left: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+}
+
+.ad-tag { background: var(--accent); color: #000; padding: 2px 8px; border-radius: 5px; font-size: 10px; font-weight: 800; }
+
+.ad-dots {
+    position: absolute;
+    bottom: 12px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; gap: 6px;
+}
+
+.dot { width: 7px; height: 7px; background: rgba(255,255,255,0.3); border-radius: 50%; transition: 0.3s; }
+.dot.active { width: 18px; background: var(--accent); border-radius: 10px; }
+
+/* --- 6. نظام البطاقات (Card Systems) --- */
+
+/* بطاقة المنتج الأساسية */
+.product-card {
+    position: relative !important;
+    background: var(--bg-card);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    overflow: hidden;
+    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    scroll-snap-align: start;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(0, 191, 255, 0.4);
+}
+
+/* البطاقة المدمجة (Compact Card) */
+.compact-card {
+    min-width: 112px !important;
+    max-width: 112px !important;
+}
+.compact-card img { height: 78px !important; }
+.compact-card .product-details h4 { font-size: 10px !important; }
+
+/* السعر والبادجات */
+.price {
+    color: var(--accent);
+    font-weight: 900;
+    font-size: 13px;
+    background: var(--accent-soft);
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+#badge-best-tt-k3m7 {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: linear-gradient(45deg, #ff0000, #b30000);
+    color: #fff; font-size: 9px; font-weight: 800;
+    padding: 2px 8px; border-radius: 6px; z-index: 5;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+#badge-best-tt-k3m7::after {
+    content: ''; position: absolute; top: -50%; left: -100%;
+    width: 50%; height: 200%; background: rgba(255,255,255,0.4);
+    transform: rotate(30deg); animation: shine-effect 2.5s infinite;
+}
+
+/* --- 7. القوائم العمودية (Vertical Lists) --- */
+.categories-list-vertical {
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px;
+}
+
+.category-row-card {
+    display: flex;
+    align-items: center;
+    padding: 15px 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.category-row-card:active { background: rgba(255, 255, 255, 0.03); }
+
+.category-icon-box {
+    width: 45px; height: 45px;
+    display: flex; align-items: center; justify-content: center;
+    margin-left: 15px;
+}
+
+.category-icon-box i { font-size: 22px; color: var(--accent); }
+
+.category-info h3 { font-size: 15px; font-weight: 700; color: #fff; margin: 0; }
+.category-info p { font-size: 11px; color: #777; margin: 3px 0 0 0; }
+
+/* --- 8. منسدلات الاختيار (Custom Dropdowns) --- */
+.custom-dropdown { position: relative; width: 100%; }
+
+.dropdown-header {
+    background: var(--glass);
+    border: 1px solid rgba(0, 191, 255, 0.2);
+    padding: 14px 15px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.dropdown-options {
+    position: absolute;
+    top: calc(100% + 8px); left: 0; width: 100%;
+    background: rgba(15, 15, 15, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0, 191, 255, 0.3);
+    border-radius: 12px;
+    display: none;
+    z-index: 999;
+}
+
+.dropdown-options.show { display: block !important; }
+
+.dropdown-options .option {
+    padding: 12px 15px;
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-options .option:hover { background: var(--accent-soft); color: var(--accent); }
+
+/* --- 9. واجهة الألعاب والباقات (Sky-Premium UI) --- */
+.sp-app-wrapper { max-width: 480px; margin: 0 auto; }
+
+.sp-mini-hero {
+    position: relative; height: 140px; margin: 15px;
+    border-radius: 22px; overflow: hidden;
+    display: flex; align-items: flex-end; padding: 18px;
+    border: 1px solid var(--border);
+}
+
+.sp-blur-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5); z-index: -1; }
+
+.sp-packages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+}
+
+.sp-package-card {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 5px;
+    text-align: center;
+    transition: 0.2s;
+}
+
+.sp-package-card.active {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+}
+
+.sp-footer-action {
+    margin: 30px 15px 10px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(18px);
+    border: 1px solid rgba(0, 191, 255, 0.12);
+    border-radius: 20px;
+    padding: 15px;
+}
+
+.sp-pay-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 800;
+}
+
+/* --- تحديث شريط التنقل السفلي (Bottom Navigation) --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 15px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%; 
+    max-width: 400px; 
+    height: 65px;
+    background: rgba(15, 15, 15, 0.85); /* تأثير زجاجي غامق */
+    backdrop-filter: blur(20px);
+    display: flex; 
+    justify-content: space-around; 
+    align-items: center;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    padding: 0 10px;
+}
+
+/* تنسيق الأزرار (طلباتي، الرئيسية، التصنيفات) */
+.nav-item {
+    background: none;      /* إزالة خلفية الزر الافتراضية */
+    border: none;          /* إزالة حدود الزر الافتراضية */
+    outline: none;
+    color: #8b95a7;        /* لون الأيقونات غير النشطة */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    justify-content: center;
+    flex: 1; 
+    height: 100%;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 4px;
+    position: relative;
+}
+
+/* تنسيق الأيقونة */
+.nav-item i {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+}
+
+/* تنسيق النص تحت الأيقونة */
+.nav-item span {
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+}
+
+/* --- حالة الزر النشط (Active State) --- */
+.nav-item.active {
+    color: var(--accent); /* اللون النيوني الأزرق */
+}
+
+/* إضافة توهج صغير تحت الزر النشط */
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 8px;
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent);
+}
+
+/* حركة بسيطة عند الضغط */
+.nav-item:active i {
+    transform: scale(0.8);
+}
+
+/* تأثير اختيار للزر النشط (اختياري: خلفية خفيفة) */
+.nav-item.active {
+    background: rgba(0, 191, 255, 0.05);
+    border-radius: 20px;
+    margin: 5px;
+    height: calc(100% - 10px);
+}
+/* --- تنسيق زر العودة للرئيسية (View More / Back Button) --- */
+.view-more {
+    background: var(--accent-soft); /* خلفية زرقاء خفيفة شفافة */
+    color: var(--accent) !important; /* نص بلون النيون الأزرق */
+    border: 1px solid rgba(0, 191, 255, 0.3); /* حدود نيون خفيفة */
+    border-radius: 15px;
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px); /* تأثير زجاجي[cite: 1] */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* تأثير عند تمرير الماوس أو اللمس */
+.view-more:hover {
+    background: var(--accent); /* يتحول للون النيون الكامل */
+    color: #000 !important; /* يصبح النص أسود للتباين */
+    transform: translateY(-3px); /* رفعة بسيطة للأعلى */
+}
+
+/* تنسيق الأيقونة داخل الزر */
+.view-more i {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+/* تحريك السهم عند الحوم فوق الزر */
+.view-more:hover i {
+    transform: translateX(-5px); /* تحريك السهم لليمين (لأن الاتجاه RTL) */
+}
+
+/* تأثير النبض الخفيف لجذب الانتباه */
+
+
+.view-more {
+    animation: pulse-border 2s infinite;
+}
+/* --- 1. واجهة صفحة السوشيال (Social Page Layout) --- */
+.sp-main-body {
+    background-color: var(--bg-dark);
+    padding-bottom: 100px;
+}
+
+.sp-top-header {
+    background: transparent;
+    padding: 20px;
+    text-align: center;
+}
+
+.sp-page-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--accent);
+}
+
+/* --- 2. الهيرو الصغير (Mini Hero & Banner) --- */
+.sp-mini-hero {
+    position: relative;
+    height: 160px;
+    margin: 15px;
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+    border: 1px solid var(--border);
+}
+
+.sp-blur-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: none;
+    z-index: -1;
+}
+
+.sp-mini-hero:hover .sp-blur-bg {
+    transform: none;
+}
+
+.sp-hero-info h2 {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.sp-id-badge {
+    background: var(--accent);
+    color: #000;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 50px;
+    text-transform: uppercase;
+}
+
+/* --- 3. مدخلات البيانات (Input Sections) --- */
+.sp-content-body {
+    padding: 0 15px;
+}
+
+.sp-section-label {
+    display: block;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    margin-right: 5px;
+}
+
+.sp-input-wrapper {
+    position: relative;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+}
+
+/* إزالة أي تأثير عند التركيز */
+.sp-input-wrapper:focus-within {
+    border-color: var(--border);
+}
+
+.sp-input-wrapper i {
+    color: var(--accent);
+    margin-left: 12px;
+    font-size: 16px;
+}
+
+.sp-input-wrapper input {
+    background: none;
+    border: none;
+    color: #fff;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.sp-input-wrapper input:focus {
+    outline: none;
+}
+
+/* تعطيل أي تأثير عام */
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+/* --- 4. القوائم المنسدلة المخصصة (Custom Dropdowns) --- */
+.custom-dropdown .dropdown-header {
+    background: var(--glass);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 12px 15px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.rotate-arrow {
+    transform: rotate(180deg);
+    color: var(--accent) !important;
+}
+
+.dropdown-options {
+    margin-top: 5px;
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.dropdown-options .option {
+    padding: 12px 15px;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+/* إزالة تأثير hover */
+.dropdown-options .option:hover {
+    background: transparent;
+    color: inherit;
+}
+
+/* --- 5. منطقة السعر والتأكيد (Price & Action) --- */
+.sp-footer-action {
+    margin-top: 30px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 25px;
+    padding: 20px;
+}
+
+.sp-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sp-price-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    display: block;
+}
+
+.sp-price-value {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--accent);
+}
+
+.sp-pay-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 15px;
+    font-weight: 800;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* إزالة تأثير الضغط */
+.sp-pay-btn:active {
+    transform: none;
+}
+
+/* --- 6. أزرار العودة (Navigation) --- */
+.sp-back-button-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.sp-back-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.sp-back-link:hover {
+    color: var(--text-muted);
+}
+
+/* تحسينات إضافية للتجاوب */
+@media (max-width: 370px) {
+    .sp-price-value { font-size: 20px; }
+    .sp-pay-btn { padding: 10px 15px; font-size: 12px; }
+} 
+.option-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+.option-tag {
+    background: var(--accent); /* اللون الأزرق النيون */
+    color: #000;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+}  
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    right: -280px; /* مخفية خارج الشاشة يميناً */
+    width: 280px;
+    height: 100%;
+    background: #0a0a0a;
+    z-index: 2000;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+    padding: 20px;
+}
+
+.side-menu.active {
+    right: 0; /* تظهر عند إضافة كلاس active */
+}
+
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    z-index: 1999;
+    backdrop-filter: blur(3px);
+}
+
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.close-menu {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 20px;
+}
+
+.menu-items a {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #ccc;
+    text-decoration: none;
+    padding: 15px 10px;
+    font-size: 15px;
+    border-radius: 10px;
+    transition: 0.2s;
+}
+
+.menu-items a i {
+    color: #00bfff;
+    width: 20px;
+}
+
+.menu-items a:active {
+    background: rgba(0, 191, 255, 0.1);
+    color: #00bfff;
+} 
+

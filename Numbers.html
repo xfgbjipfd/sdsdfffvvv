@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | تفعيل الأرقام</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* تنسيق إضافي لترتيب الخانات بجانب بعضها */
+        .sp-row-flex {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .sp-row-flex .sp-input-section {
+            flex: 1;
+            margin-top: 0 !important;
+        }
+        /* تصغير النص قليلاً ليتناسب مع العرض المحدود */
+        .dropdown-header span {
+            font-size: 11px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body class="sp-main-body">
+
+    <div class="sp-app-wrapper">
+        <header class="sp-top-header">
+            <h1 class="sp-page-title" id="number_title">تفعيل الأرقام</h1>
+        </header>
+
+        <div class="sp-mini-hero">
+            <img id="number_banner" src="" class="sp-blur-bg" alt="Banner">
+            <div class="sp-hero-info">
+                <h2 id="number_platform">تحميل الخدمة...</h2>
+                <span class="sp-id-badge">تفعيل فوري آمن</span>
+            </div>
+        </div>
+
+        <div class="sp-content-body">
+            <!-- اختر الدولة/التطبيق -->
+            <div class="sp-input-section">
+                <label class="sp-section-label">اختر التطبيق:</label>
+                <div class="custom-dropdown">
+                    <div class="dropdown-header" id="countryHeader">
+                        <span id="selected_country_text">اختر التطبيق</span>
+                        <i class="fas fa-chevron-down" id="countryArrow"></i>
+                    </div>
+                    <div id="countryOptions" class="dropdown-options"></div>
+                </div>
+            </div>
+
+            <!-- حاوية تجمع النوع والعدد بجانب بعضهما -->
+            <div class="sp-row-flex">
+                <!-- اختر النوع -->
+                <div class="sp-input-section">
+                    <label class="sp-section-label">النوع:</label>
+                    <div class="custom-dropdown">
+                        <div class="dropdown-header" id="serviceHeader">
+                            <span id="selected_service_text">اختر النوع</span>
+                            <i class="fas fa-chevron-down" id="serviceArrow"></i>
+                        </div>
+                        <div id="serviceOptions" class="dropdown-options"></div>
+                    </div>
+                </div>
+
+                <!-- عدد الأرقام -->
+                <div class="sp-input-section">
+                    <label class="sp-section-label">الكمية:</label>
+                    <div class="custom-dropdown">
+                        <div class="dropdown-header" id="quantityHeader">
+                            <span id="selected_quantity_text">1</span>
+                            <i class="fas fa-chevron-down" id="quantityArrow"></i>
+                        </div>
+                        <div id="quantityOptions" class="dropdown-options">
+                            <!-- سيتم تعبئتها عبر JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sp-footer-action">
+                <div class="sp-price-row">
+                    <div class="sp-price-summary">
+                        <span class="sp-price-label">السعر الإجمالي</span>
+                        <h3 id="sp_final_total" class="sp-price-value">$0.00</h3>
+                    </div>
+                    <button id="orderBtn" class="sp-pay-btn">
+                         طلب التفعيل <i class="fas fa-bolt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sp-back-button-container">
+                <a href="javascript:history.back()" class="sp-back-link">
+                    <i class="fas fa-chevron-right"></i> العودة للمتجر
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="price_value" value="0.00">
+    <input type="hidden" id="selected_country" value="">
+    <input type="hidden" id="selected_service" value="">
+    <input type="hidden" id="selected_quantity" value="1">
+
+    <script src="Numbers.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

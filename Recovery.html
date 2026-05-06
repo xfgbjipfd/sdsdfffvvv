@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | مركز فك التبنيد الاحترافي</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* إضافة لمسات تقنية إضافية */
+        .tech-badge { background: rgba(0, 255, 255, 0.1); border: 1px solid cyan; color: cyan; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-right: 5px; }
+        .sp-alert-box { background: rgba(255, 165, 0, 0.1); border-right: 3px solid orange; padding: 10px; font-size: 12px; margin-bottom: 15px; color: #eee; }
+        
+        /* تحسين مظهر القوائم المنسدلة المخصصة لضمان التناسق */
+        .custom-dropdown { position: relative; width: 100%; }
+        .dropdown-header { 
+            background: #111; 
+            border: 1px solid #333; 
+            padding: 12px 15px; 
+            border-radius: 8px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            cursor: pointer; 
+            color: #ccc;
+        }
+        .dropdown-options { 
+            display: none; 
+            position: absolute; 
+            width: 100%; 
+            background: #0a0a0a; 
+            border: 1px solid #333; 
+            z-index: 100; 
+            border-radius: 0 0 8px 8px; 
+        }
+        .dropdown-options.show { display: block; }
+        .option { padding: 12px; cursor: pointer; border-bottom: 1px solid #1a1a1a; display: flex; align-items: center; justify-content: space-between; }
+        .option:hover { background: #1a1a1a; }
+    </style>
+</head>
+<body class="sp-main-body">
+
+    <div class="sp-app-wrapper">
+        <header class="sp-top-header">
+            <h1 class="sp-page-title">قسم الاسترجاع المتقدم</h1>
+            <div class="tech-status"><i class="fas fa-shield-virus"></i> أنظمة المراسلة: متصلة</div>
+        </header>
+
+        <div class="sp-content-body">
+            <div class="sp-alert-box">
+                <i class="fas fa-exclamation-triangle"></i> ملاحظة: تكلفة الاسترجاع تعتمد على قوة "قضية التعطيل" ونوع الثغرة المستخدمة للمراسلة.
+            </div>
+
+            <div class="sp-input-section">
+                <label class="sp-section-label">يوزر الحساب المستهدف (Username):</label>
+                <div class="sp-input-wrapper">
+                    <i class="fas fa-user-shield"></i>
+                    <input type="text" id="target_user" placeholder="@username">
+                </div>
+            </div>
+
+            <div class="sp-input-section" style="margin-top: 15px;">
+                <label class="sp-section-label">البريد المربوط الأساسي (Original Email):</label>
+                <div class="sp-input-wrapper">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <input type="email" id="target_email" placeholder="example@gmail.com">
+                </div>
+            </div>
+
+            <div class="sp-input-section" style="margin-top: 15px;">
+                <label class="sp-section-label">نوع التعطيل (Ban Reason):</label>
+                <div class="custom-dropdown">
+                    <div class="dropdown-header" id="recoveryHeader">
+                        <span id="selected_recovery_text">اختر الحالة بدقة</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-options" id="recoveryOptions">
+                        </div>
+                </div>
+            </div>
+
+            <div class="sp-input-section" style="margin-top: 15px;">
+                <label class="sp-section-label">هل تم الرد على طعن يدوي من قبل؟</label>
+                <div class="custom-dropdown">
+                    <div class="dropdown-header" id="appealHeader">
+                        <span id="selected_appeal_text">اختر حالة الرد</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-options" id="appealOptions">
+                        <div class="option" onclick="selectAppeal('no', 'لم يتم تقديم طعن (فرصة نجاح عالية)')">
+                            <div>
+                                <span class="tech-badge" style="border-color:#00ff88; color:#00ff88">خيار مثالي</span>
+                                <span class="option-text">لم يتم تقديم طعن</span>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectAppeal('yes', 'تم الرفض النهائي (يتطلب ثغرة قوية)')">
+                            <div>
+                                <span class="tech-badge" style="border-color:#ff0000; color:#ff0000">صعب</span>
+                                <span class="option-text">تم الرفض النهائي</span>
+                            </div>
+                        </div>
+                        <div class="option" onclick="selectAppeal('pending', 'بانتظار الرد (تجميد الطلب)')">
+                            <div>
+                                <span class="tech-badge" style="border-color:#ffaa00; color:#ffaa00">معلق</span>
+                                <span class="option-text">بانتظار الرد</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="appeal_status" value="">
+            </div>
+
+            <div class="sp-input-section" style="margin-top: 15px;">
+                <label class="sp-section-label">تاريخ التعطيل التقديري:</label>
+                <div class="sp-input-wrapper">
+                    <i class="fas fa-calendar-alt"></i>
+                    <input type="date" id="ban_date">
+                </div>
+            </div>
+
+            <div class="sp-input-section" style="margin-top: 15px;">
+                <label class="sp-section-label">آخر جهاز تم تسجيل الدخول منه:</label>
+                <div class="sp-input-wrapper">
+                    <i class="fas fa-mobile-alt"></i>
+                    <input type="text" id="last_device" placeholder="مثلاً: iPhone 14 Pro Max">
+                </div>
+            </div>
+
+            <div class="sp-footer-action">
+                <div class="sp-price-row">
+                    <div class="sp-price-summary">
+                        <span class="sp-price-label">التكلفة التقريبية للعملية</span>
+                        <h3 id="final_price" class="sp-price-value">$0.00</h3>
+                    </div>
+                    <button id="startProcess" class="sp-pay-btn">
+                         بدء المراسلة <i class="fas fa-bolt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sp-back-button-container">
+                <a href="javascript:history.back()" class="sp-back-link">إلغاء العملية والعودة</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="Recovery.js"></script>
+    <script>
+        // كود إضافي للتحكم بالقائمة المنسدلة الجديدة للطعن
+        const appealHeader = document.getElementById('appealHeader');
+        const appealOptions = document.getElementById('appealOptions');
+
+        appealHeader.onclick = (e) => {
+            e.stopPropagation();
+            appealOptions.classList.toggle('show');
+            document.getElementById('recoveryOptions').classList.remove('show');
+        };
+
+        function selectAppeal(value, text) {
+            document.getElementById('selected_appeal_text').innerText = text;
+            document.getElementById('selected_appeal_text').style.color = "#00ffcc";
+            document.getElementById('appeal_status').value = value;
+            appealOptions.classList.remove('show');
+        }
+
+        window.onclick = () => {
+            appealOptions.classList.remove('show');
+            document.getElementById('recoveryOptions').classList.remove('show');
+        };
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

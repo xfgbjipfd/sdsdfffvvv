@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | اشتراكات وتوثيق</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="sp-main-body">
+
+    <div class="sp-app-wrapper">
+        <header class="sp-top-header">
+            <h1 class="sp-page-title" id="subs_title">اشتراكات وتوثيق</h1>
+        </header>
+
+        <div class="sp-mini-hero">
+            <img id="subs_banner" src="" class="sp-blur-bg" alt="Banner">
+            <div class="sp-hero-info">
+                <h2 id="service_display_name">تحميل الخدمة...</h2>
+                <span class="sp-id-badge">اشتراك رسمي وآمن 100%</span>
+            </div>
+        </div>
+
+        <div class="sp-content-body">
+            <!-- حقل إدخال المعرف (Username / Email) -->
+            <div class="sp-input-section" style="margin-bottom: 20px;">
+                <label class="sp-section-label">اليوزرنيم أو البريد الإلكتروني:</label>
+                <div class="sp-input-wrapper">
+                    <i class="fas fa-at"></i>
+                    <input type="text" id="target_account" placeholder="أدخل اسم الحساب هنا...">
+                </div>
+            </div>
+
+            <!-- منسدل اختيار الباقة -->
+            <div class="sp-input-section">
+                <label class="sp-section-label">اختر نوع الاشتراك / المدة:</label>
+                <div class="custom-dropdown">
+                    <div class="dropdown-header" id="planHeader">
+                        <span id="selected_plan_text">اختر الباقة</span>
+                        <i class="fas fa-chevron-down" id="planArrow"></i>
+                    </div>
+                    <div id="planOptions" class="dropdown-options">
+                        <!-- يتم التعبئة تلقائياً من الـ JS -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="sp-footer-action">
+                <div class="sp-price-row">
+                    <div class="sp-price-summary">
+                        <span class="sp-price-label">تكلفة الاشتراك</span>
+                        <h3 id="sp_final_total" class="sp-price-value">$0.00</h3>
+                    </div>
+                    <button id="submitOrder" class="sp-pay-btn">
+                         تأكيد الاشتراك <i class="fas fa-gem"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sp-back-button-container">
+                <a href="javascript:history.back()" class="sp-back-link">
+                    <i class="fas fa-chevron-right"></i> العودة للمتجر
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- حقول مخفية لتخزين القيم -->
+    <input type="hidden" id="plan_price" value="0.00">
+
+    <script src="Subscriptions.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

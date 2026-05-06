@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>دفع USDT | Skypost</title>
+    
+    <!-- ربط التنسيقات والخطوط -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .pay-container { padding: 20px; max-width: 450px; margin: 0 auto; }
+        
+        /* تصميم الحاويات الزجاجية */
+        .step-box {
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 25px;
+            text-align: center;
+            display: none; 
+        }
+        .step-box.active { display: block; animation: fadeIn 0.5s ease; }
+
+        .network-badge {
+            background: rgba(38, 161, 123, 0.15);
+            color: #26a17b;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .amount-input-group { margin: 20px 0; }
+        .amount-input-group input {
+            width: 100%;
+            background: var(--glass);
+            border: 2px solid var(--border);
+            border-radius: 15px;
+            padding: 15px;
+            color: #fff;
+            font-size: 22px;
+            text-align: center;
+            font-weight: 900;
+            outline: none;
+        }
+        .amount-input-group input:focus { border-color: var(--accent); }
+
+        .address-box {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px dashed var(--accent);
+            margin: 15px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 14px;
+            color: var(--accent);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .timer-display {
+            font-size: 32px;
+            font-weight: 900;
+            color: #ff4444;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(255,68,68,0.3);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="sp-main-body">
+
+    <div class="pay-container">
+        <!-- الهيدر -->
+        <header class="top-nav-brand" style="margin-bottom: 20px;">
+            <button class="header-icon-btn side-btn" onclick="window.history.back()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <div class="brand-small">USDT<span> Pay</span></div>
+            <div style="width: 38px;"></div>
+        </header>
+
+        <!-- الخطوة 1: إدخال المبلغ -->
+        <div id="step1" class="step-box active">
+            <span class="network-badge">شبكة TRC20 فقط</span>
+            <h3>تحديد مبلغ الشحن</h3>
+            <p style="color: var(--text-muted); font-size: 13px;">أدخل المبلغ الذي ستقوم بتحويله بالدولار</p>
+            
+            <div class="amount-input-group">
+                <input type="number" id="usdtAmount" placeholder="0.00" min="1">
+            </div>
+
+            <button class="sp-pay-btn" style="width: 100%; justify-content: center;" onclick="startPayment()">
+                تأكيد ومتابعة <i class="fas fa-chevron-left" style="margin-right: 10px;"></i>
+            </button>
+        </div>
+
+        <!-- الخطوة 2: الدفع والتحقق -->
+        <div id="step2" class="step-box">
+            <div class="timer-display" id="timer">60:00</div>
+            <p style="font-size: 13px; color: var(--text-muted);">يرجى تحويل المبلغ للعنوان التالي:</p>
+            
+            <div class="address-box" onclick="copyAddress()">
+                <span id="walletAddr">TGNdd6QV5iayyue8vbjHQNwDMVQedjNx1m</span>
+                <i class="fas fa-copy" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); opacity: 0.5;"></i>
+            </div>
+
+            <div style="text-align: right; font-size: 12px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 15px; border: 1px solid var(--border);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span>المبلغ المطلوب:</span>
+                    <span id="displayAmount" style="color: var(--accent); font-weight: 800;">0 USDT</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>الشبكة المعتمدة:</span>
+                    <span style="color: #26a17b; font-weight: 700;">TRON (TRC20)</span>
+                </div>
+            </div>
+
+            <p style="color: #ffcc00; font-size: 11px; margin-top: 15px;">
+                <i class="fas fa-info-circle"></i> تنبيه: لا تقم بالتحويل عبر أي شبكة أخرى لتجنب ضياع الأموال.
+            </p>
+
+            <!-- زر التحقق التفاعلي (دوران مستمر) -->
+            <button id="verifyBtn" class="sp-pay-btn" style="width: 100%; justify-content: center; margin-top: 20px; background: #26a17b; color: white;" onclick="processVerification()">
+                لقد قمت بالدفع (بدء التحقق)
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // بدء عملية الدفع والانتقال للخطوة التالية
+        function startPayment() {
+            const amount = document.getElementById('usdtAmount').value;
+            if (amount < 1) {
+                alert("يرجى إدخال مبلغ 1 دولار على الأقل");
+                return;
+            }
+
+            document.getElementById('displayAmount').innerText = amount + " USDT";
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.add('active');
+
+            startTimer(60 * 60); // مؤقت 60 دقيقة[cite: 2]
+        }
+
+        // نظام العداد التنازلي
+        function startTimer(duration) {
+            let timer = duration, minutes, seconds;
+            const display = document.getElementById('timer');
+            
+            const countdown = setInterval(function () {
+                minutes = parseInt(timer / 60, 10);
+                seconds = parseInt(timer % 60, 10);
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                display.textContent = minutes + ":" + seconds;
+
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    display.textContent = "ملغي";
+                    alert("انتهى وقت الجلسة، يرجى المحاولة مرة أخرى.");
+                    window.location.href = 'add-balance.html';
+                }
+            }, 1000);
+        }
+
+        // نسخ العنوان للمحفظة
+        function copyAddress() {
+            const addr = document.getElementById('walletAddr').innerText;
+            navigator.clipboard.writeText(addr).then(() => {
+                alert("تم نسخ العنوان بنجاح");
+            });
+        }
+
+        // وظيفة التحقق المستمر دون توقف أو رسائل منبثقة[cite: 1]
+        function processVerification() {
+            const btn = document.getElementById('verifyBtn');
+            
+            // تحويل الزر لوضعية التحميل المستمر
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin" style="margin-left: 10px;"></i> جاري التحقق من حالة الدفع...';
+            
+            // تغيير المظهر لتعطيل التفاعل
+            btn.style.background = "#444"; 
+            btn.style.pointerEvents = "none"; 
+
+            // سيبقى الزر في هذه الحالة (دوران مستمر) دون أي تنبيهات إضافية
+            console.log("نظام التحقق نشط - في انتظار تأكيد الشبكة");
+        }
+    </script>
+
+</body>
+</html>

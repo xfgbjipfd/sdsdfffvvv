@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | شحن الرصيد</title>
+    
+    <!-- ربط ملفات التنسيق الخارجية -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .payment-options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px 15px;
+        }
+
+        .payment-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .payment-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-soft);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--accent);
+        }
+
+        .payment-details h3 {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .payment-details p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .usdt-color { color: #26a17b !important; } /* لون الـ USDT المميز */
+        .stars-color { color: #ffcc00 !important; } /* لون نجوم تيليجرام */
+
+        .page-header-simple {
+            text-align: center;
+            padding: 30px 10px 10px;
+        }
+
+        .page-header-simple h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="main-layout">
+        <!-- الهيدر العلوي (زر الرجوع) -->
+        <header class="top-nav-brand">
+            <button class="header-icon-btn side-btn" onclick="window.location.href='index.html'">
+    <i class="fas fa-arrow-right"></i>
+</button>
+            <div class="brand-small">Sky<span>post</span></div>
+            <div style="width: 38px;"></div> <!-- توازن الهيدر -->
+        </header>
+
+        <div class="page-header-simple">
+            <h1>شحن رصيد المحفظة</h1>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px;">اختر وسيلة الدفع المناسبة لك</p>
+        </div>
+
+        <main class="payment-options-container">
+            
+            <!-- خيار الدفع عبر USDT -->
+            <!-- ابحث عن هذا القسم في ملف add-balance.html وقم بتعديله كالتالي -->
+<a href="usdt-pay.html" class="payment-card">
+    <div class="payment-icon">
+        <i class="fas fa-coins usdt-color"></i>
+    </div>
+    <div class="payment-details">
+        <h3>الدفع عبر USDT (TRC20)</h3>
+        <p>إيداع آلي سريع عبر العملات الرقمية</p>
+    </div>
+    <div style="margin-right: auto; color: var(--border);">
+        <i class="fas fa-chevron-left"></i>
+    </div>
+</a>
+
+            <!-- خيار الدفع عبر نجوم تيليجرام -->
+            <a href="stars-pay.html" class="payment-card">
+                <div class="payment-icon">
+                    <i class="fas fa-star stars-color"></i>
+                </div>
+                <div class="payment-details">
+                    <h3>نجوم تيليجرام (Telegram Stars)</h3>
+                    <p>دفع مباشر عبر تطبيق تيليجرام</p>
+                </div>
+                <div style="margin-right: auto; color: var(--border);">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+            </a>
+
+        </main>
+
+        <!-- زر دعم فني في حال وجود مشكلة -->
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="https://t.me/Skybo_sub" class="sp-back-link">
+                <i class="fas fa-question-circle"></i> هل تواجه مشكلة في الشحن؟
+            </a>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

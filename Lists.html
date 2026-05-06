@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | كافة الخدمات</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/7.2.3/css/flag-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .categories-list-vertical {
+            display: flex;
+            flex-direction: column;
+            padding: 0 10px;
+            background: transparent;
+        }
+
+        .category-row-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 5px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .category-row-card:last-child {
+            border-bottom: none;
+        }
+
+        .category-row-card:active {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .category-icon-box {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+        }
+
+        .category-icon-box img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .category-info {
+            flex-grow: 1;
+        }
+
+        .category-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .category-info p {
+            font-size: 11px;
+            color: #777;
+            margin: 3px 0 0 0;
+        }
+
+        .arrow-indicator {
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .item-price-tag {
+            color: #00bfff;
+            font-weight: 800;
+            font-size: 13px;
+            background: rgba(0, 191, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="main-layout">
+        <main class="list-container">
+            <div class="category-header">
+                <div class="icon-btn" style="width: 45px; height: 45px; font-size: 20px;">
+                    <i id="catIcon" class="fas fa-list-ul"></i>
+                </div>
+                <div>
+                    <h2 id="catName" style="color: #fff; font-size: 18px; font-weight: 800; margin: 0;">جاري التحميل...</h2>
+                    <p style="color: #666; font-size: 11px; margin-top: 2px;">اختر الخدمة المناسبة لك</p>
+                </div>
+            </div>
+
+            <div class="categories-list-vertical" id="itemsList"></div>
+
+            <div style="margin-top: 40px; display: flex; justify-content: center; padding-bottom: 60px;">
+                <a href="index.html" class="view-more" style="padding: 12px 40px; font-size: 14px; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-arrow-right"></i> العودة للرئيسية
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('cat'); 
+        const itemsList = document.getElementById('itemsList');
+
+        const catConfig = {
+            'social':   { name: 'خدمات الرشق والمتابعين', icon: 'fa-rocket', file: 'Social.html' },
+            'games':    { name: 'شحن الألعاب الرقمية', icon: 'fa-gamepad', file: 'Games.html' },
+            'subs':     { name: 'اشتراكات وتوثيق', icon: 'fa-gem', file: 'Subscriptions.html' },
+            'numbers':  { name: 'أرقام تفعيل دولية', icon: 'fa-sms', file: 'Numbers.html' },
+            'recovery': { name: 'استرجاع الحسابات', icon: 'fa-user-shield', file: 'Recovery.html' },
+            'cards':    { name: 'البطاقات ورموز الاسترداد', icon: 'fa-ticket-alt', file: 'Cards.html' }
+        };
+
+        // تم إضافة خاصية key لكل لعبة لتطابق البيانات في ملف games.js
+        const allServices = [
+            { img: 'https://i.ibb.co/9mVQqm1f/unnamed.webp', title: 'خدمات انستغرام', desc: 'رشق وتزويد لايكات', price: 'حسب الطلب', cat: 'social' },
+            { img: 'https://i.ibb.co/yBpKspyh/unnamed-1.webp', title: 'خدمات تيك توك', desc: 'زيادة مشاهدات وفولو', price: 'حسب الطلب', cat: 'social' },
+            { img: 'https://i.ibb.co/y3Npg0S/image.jpg', title: 'خدمات فيسبوك', desc: 'رشق متابعين وتفاعل', price: 'حسب الطلب', cat: 'social' },
+            { img: 'https://i.ibb.co/LX2Pm0Lb/images.png', title: 'خدمات يوتيوب', desc: 'مشتركين ومشاهدات', price: 'حسب الطلب', cat: 'social' },
+            { img: 'https://i.ibb.co/v6S0VtsL/image.jpg', title: 'خدمات سناب شات', desc: 'إضافات ونشر حسابات', price: 'حسب الطلب', cat: 'social' },
+            { img: 'https://i.ibb.co/WvmRpH4t/image.jpg', title: 'خدمات تيليجرام', desc: 'أعضاء قنوات وجروبات', price: 'حسب الطلب', cat: 'social' },
+            
+            // قسم الألعاب مع المفاتيح الصحيحة[cite: 2, 3]
+            { img: 'https://i.ibb.co/QFc1GdRJ/pubg.jpg', title: 'PUBG Mobile', desc: 'شحن شدات UC', price: '$0.99', cat: 'games', key: 'pubg' },
+            { img: 'https://i.ibb.co/PvTwjfY0/yalla.jpg', title: 'Yalla Ludo', desc: 'شحن ذهب والماس', price: '$1.50', cat: 'games', key: 'yalla' },
+            { img: 'https://i.ibb.co/ffMMb6J/coc.png', title: 'Clash of Clans', desc: 'شحن جواهر', price: '$4.99', cat: 'games', key: 'coc' },
+            { img: 'https://i.ibb.co/nMDrR8T9/ml.jpg', title: 'Mobile Legends', desc: 'شحن دايموند', price: '$2.00', cat: 'games', key: 'ml' },
+            { img: 'https://i.ibb.co/Qvyb22HC/cr.png', title: 'Clash Royale', desc: 'شحن جواهر', price: '$4.99', cat: 'games', key: 'cr' },
+            { img: 'https://i.ibb.co/yn35pLqP/images.jpg', title: 'Free Fire', desc: 'شحن جواهر', price: '$4.99', cat: 'games', key: 'ff' },
+            
+            { img: 'https://i.ibb.co/HpDPs9sV/image.jpg', title: 'تليجرام بريميوم', desc: 'اشتراك رسمي', price: '$3.99', cat: 'subs' },
+{ img: 'https://i.ibb.co/LdzgMYDG/image.jpg', title: 'عملات تيك توك', desc: 'شحن رصيد محفظة', price: '$1.20', cat: 'subs' },
+{ img: 'https://i.ibb.co/tT6ntw06/image.jpg', title: 'توثيق انستغرام', desc: 'العلامة الزرقاء', price: '$14.99', cat: 'subs' },
+{ img: 'https://i.ibb.co/YFbXyYKP/image.jpg', title: 'توثيق فيسبوك', desc: 'العلامة الزرقاء', price: '$14.99', cat: 'subs' },
+{ img: 'https://i.ibb.co/Y710wdjJ/image.jpg', title: 'توثيق تويتر', desc: 'العلامة الزرقاء', price: '$14.99', cat: 'subs' },
+
+// إضافات جديدة
+{ img: 'https://i.ibb.co/DDmpYJLy/image.jpg', title: 'نتفلكس', desc: 'اشتراك مشاهدة أفلام ومسلسلات', price: '$5.99', cat: 'subs' },
+{ img: 'https://i.ibb.co/Kc6dgK9t/image.jpg', title: 'سبوتيفاي بريميوم', desc: 'استماع بدون إعلانات', price: '$3.99', cat: 'subs' },
+{ img: 'https://i.ibb.co/kVVPPXRZ/image.jpg', title: 'يوتيوب بريميوم', desc: 'مشاهدة بدون إعلانات', price: '$4.99', cat: 'subs' },
+{ img: 'https://i.ibb.co/Qv3CX2rs/image.jpg', title: 'شاهد VIP', desc: 'اشتراك مسلسلات وأفلام عربية', price: '$4.99', cat: 'subs' },
+{ img: 'https://i.ibb.co/YFwy4drD/image.jpg', title: 'OSN+', desc: 'اشتراك أفلام ومسلسلات', price: '$5.99', cat: 'subs' },
+{ img: 'https://i.ibb.co/JPTrzKc/image.jpg', title: 'أمازون برايم فيديو', desc: 'اشتراك فيديو وأفلام', price: '$4.99', cat: 'subs' },
+            { img: 'https://i.ibb.co/JWwQN66f/image.jpg', title: 'أرقام أمريكا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/tTw0hyK1/image.jpg', title: 'أرقام بريطانيا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/1fNNXB9t/image.jpg', title: 'أرقام ألمانيا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/G4NkCPjC/image.jpg', title: 'أرقام روسيا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/qLsdXbPg/image.jpg', title: 'أرقام كندا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/qYFySLKD/image.jpg', title: 'أرقام فرنسا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+
+{ img: 'https://i.ibb.co/WWy010bh/ITA.jpg', title: 'أرقام إيطاليا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/0jqsqCFm/214.jpg', title: 'أرقام إسبانيا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/Df1Tgqc0/230.jpg', title: 'أرقام تركيا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/TMKxDNct/128.jpg', title: 'أرقام الهند', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/9xyFm0c/86.jpg', title: 'أرقام الصين', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/939qxHwS/136.jpg', title: 'أرقام اليابان', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/8gT5P61h/74.jpg', title: 'أرقام البرازيل', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/Sp7YVHY/59.jpg', title: 'أرقام أستراليا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/LhcY8QPK/175.jpg', title: 'أرقام هولندا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+{ img: 'https://i.ibb.co/XmFSmMb/219.jpg', title: 'أرقام السويد', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers' },
+            { img: 'https://i.ibb.co/JWvcvjvH/image.jpg', title: 'استرجاع انستا', desc: 'استرداد حساب', price: 'حسب الطلب', cat: 'recovery' },
+            { img: 'https://i.ibb.co/hJ2C16By/image.jpg', title: 'استرجاع فيسبوك', desc: 'استرداد حساب', price: 'حسب الطلب', cat: 'recovery' },
+            { img: 'https://i.ibb.co/G401FjTD/image.jpg', title: 'استرجاع جوجل', desc: 'استرداد حساب', price: 'حسب الطلب', cat: 'recovery' },
+            { img: 'https://i.ibb.co/p62NJq9C/image.jpg', title: 'استرجاع سناب شات', desc: 'استرداد حساب', price: 'حسب الطلب', cat: 'recovery' },
+            { img: 'https://i.ibb.co/ds7PKb13/image.jpg', title: 'استرجاع تيك توك', desc: 'استرداد حساب', price: 'حسب الطلب', cat: 'recovery' }, 
+            
+            { img: 'https://i.ibb.co/Y45sCwNn/images-2.jpg', title: 'بطاقات جوجل بلاي', desc: 'كروت شحن جوجل بلاي USA', price: 'PRT', cat: 'cards' },
+            { img: 'https://i.ibb.co/zhr6rxyv/image.jpg', title: 'بطاقات آيتونز', desc: 'كروت شحن أبل ستور USA', price: 'PRT', cat: 'cards' },
+            { img: 'https://i.ibb.co/wFB3HZGV/images-4.jpg', title: 'ريزر جولد', desc: 'شحن محفظة Razer Gold', price: 'PRT', cat: 'cards' },
+            { img: 'https://i.ibb.co/D3qSh41/images-5.jpg', title: 'بطاقات بلايستيشن', desc: 'ستور سعودي وإماراتي', price: 'PRT', cat: 'cards' },
+            { img: 'https://i.ibb.co/LXW6h1x0/images-6.jpg', title: 'بطاقات إكس بوكس', desc: 'شحن رصيد لايف', price: 'PRT', cat: 'cards' },
+            { img: 'https://i.ibb.co/kV1p4FmZ/images-3.png', title: 'بطاقات ستيم', desc: 'شحن محفظة Steam', price: 'PRT', cat: 'cards' },
+            { img: 'https://i.ibb.co/Rp1tHZkt/images-4.png', title: 'بطاقات أمازون', desc: 'تسوق أونلاين', price: 'PRT', cat: 'cards' }, 
+            { img: 'https://i.ibb.co/zKg43VQ/image.png', title: 'بطاقات اسياسيل', desc: 'شحن رصيد اسياسيل', price: 'PRT', cat: 'cards' }, 
+            { img: 'https://i.ibb.co/hF8dKHqt/unnamed-4.webp', title: 'بطاقات اثير', desc: 'شحن رصيد اثير', price: 'PRT', cat: 'cards' }, { img: 'https://i.ibb.co/cX2x6mSp/images-5.png', title: 'بطاقات فودافون كاش', desc: 'شحن رصيد فودافون كاش', price: 'PRT', cat: 'cards' }, 
+            { img: 'https://i.ibb.co/tTFPFHL1/images-6.png', title: 'بطاقات STC pay', desc: 'شحن رصيد STC', price: 'PRT', cat: 'cards' }
+        ];
+
+        function renderServices() {
+            itemsList.innerHTML = ''; 
+            let found = false;
+
+            allServices.forEach(service => {
+                if (!category || category === service.cat) {
+                    const card = document.createElement('div');
+                    card.className = 'category-row-card';
+                    
+                    card.innerHTML = `
+                        <div class="category-icon-box">
+                            <img src="${service.img}" alt="${service.title}">
+                        </div>
+                        <div class="category-info">
+                            <h3>${service.title}</h3>
+                            <p>${service.desc}</p>
+                        </div>
+                        <div class="item-price-tag">${service.price}</div>
+                        <div class="arrow-indicator">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    `;
+                    
+                    // وظيفة التوجيه المعدلة لإرسال البيانات المطلوبة لملف games.js[cite: 2, 3]
+                    card.onclick = () => {
+                        const targetFile = catConfig[service.cat] ? catConfig[service.cat].file : 'Games.html';
+                        
+                        // بناء بارامترات الرابط[cite: 2, 3]
+                        const params = new URLSearchParams();
+                        params.append('name', service.title);
+                        params.append('img', service.img);
+                        params.append('game', service.key || 'default');
+
+                        window.location.href = `${targetFile}?${params.toString()}`;
+                    };
+
+                    itemsList.appendChild(card);
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                itemsList.innerHTML = "<p style='color:#777; text-align:center; padding: 40px;'>لا توجد خدمات في هذا القسم حالياً.</p>";
+            }
+            
+            updateHeader(category);
+        }
+
+        function updateHeader(cat) {
+            const catNameElement = document.getElementById('catName');
+            const catIconElement = document.getElementById('catIcon');
+            if (cat && catConfig[cat]) {
+                catNameElement.innerText = catConfig[cat].name;
+                catIconElement.className = `fas ${catConfig[cat].icon}`;
+            } else {
+                catNameElement.innerText = "كافة الخدمات";
+                catIconElement.className = "fas fa-list-ul";
+            }
+        }
+
+        renderServices();
+    });
+    </script>
+    <script src="main.js"></script>
+    <script src="search.js"></script>
+</body>
+</html>

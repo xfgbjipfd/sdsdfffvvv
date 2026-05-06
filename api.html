@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dashboard | Developer API</title>
+    
+    <!-- الربط بملف الاستايل الأساسي -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* تحسينات الواجهة الاحترافية */
+        :root {
+            --panel-bg: rgba(10, 10, 10, 0.95);
+            --code-color: #5ccfe6;
+        }
+
+        body { 
+            padding-bottom: 50px !important; 
+            background-attachment: fixed;
+        }
+
+        /* هيدر اللوحة المطور */
+        .api-pro-header {
+            padding: 25px 20px;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(0, 191, 255, 0.05), transparent);
+        }
+
+        .api-pro-header h2 {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        /* شبكة الإحصائيات الحية */
+        .live-status-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 0 15px;
+            margin-bottom: 25px;
+        }
+
+        .status-item {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 5px;
+            text-align: center;
+        }
+
+        .status-item i { font-size: 14px; color: var(--accent); margin-bottom: 5px; }
+        .status-item span { display: block; font-size: 9px; color: var(--text-muted); text-transform: uppercase; }
+        .status-item b { font-size: 12px; color: #fff; }
+
+        /* منطقة التحكم بالمفاتيح */
+        .management-card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            margin: 0 15px 25px 15px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .management-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent);
+        }
+
+        .key-input-group {
+            margin-top: 15px;
+        }
+
+        .key-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--accent);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .key-display {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s;
+        }
+
+        .key-display code {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            color: #eee;
+            word-break: break-all;
+        }
+
+        .action-icon {
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 5px;
+            transition: 0.2s;
+        }
+
+        .action-icon:hover { color: var(--accent); }
+
+        /* توثيق الـ Endpoints السلس */
+        .docs-section {
+            padding: 0 15px;
+        }
+
+        .endpoint-wrapper {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .method-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .badge-method {
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+        .badge-post { background: #00ff88; color: #000; }
+        .badge-get { background: var(--accent); color: #000; }
+
+        .endpoint-path {
+            font-family: monospace;
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .params-list {
+            margin-top: 15px;
+            border-top: 1px solid var(--border);
+            padding-top: 10px;
+        }
+
+        .param-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 11px;
+        }
+
+        .param-n { color: var(--accent); font-weight: 700; }
+        .param-t { color: #ff007b; }
+
+        /* مساحة الكود الاحترافية */
+        .code-window {
+            background: #050505;
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .code-bar {
+            background: #111;
+            padding: 6px 12px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .code-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+        pre {
+            padding: 15px;
+            margin: 0;
+            font-size: 12px;
+            color: var(--code-color);
+            direction: ltr;
+            text-align: left;
+            overflow-x: auto;
+        }
+
+        /* زر العودة المخصص */
+        .exit-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px auto;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 12px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .exit-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-layout">
+        
+        <!-- الهيدر العلوي -->
+        <div class="api-pro-header">
+            <div style="background: var(--accent-soft); width: 60px; height: 60px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                <i class="fas fa-code" style="font-size: 28px; color: var(--accent);"></i>
+            </div>
+            <h2>بوابة المطورين</h2>
+            <p style="color: var(--text-muted); font-size: 12px;">إدارة مفاتيح الربط والتوثيق البرمجي</p>
+        </div>
+
+        <!-- شبكة الحالة -->
+        <div class="live-status-grid">
+            <div class="status-item">
+                <i class="fas fa-server"></i>
+                <span>الخادم</span>
+                <b>Online</b>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>الضغط</span>
+                <b>Low</b>
+            </div>
+            <div class="status-item">
+                <i class="fas fa-microchip"></i>
+                <span>الإصدار</span>
+                <b>v2.4.0</b>
+            </div>
+        </div>
+
+        <!-- لوحة التحكم بالمفاتيح -->
+        <section class="management-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-size: 15px;">بيانات الاعتماد</h3>
+                <button onclick="generateAccessKeys()" style="background: var(--accent-soft); border: none; color: var(--accent); padding: 5px 12px; border-radius: 8px; font-size: 11px; cursor: pointer;">
+                    تحديث هويتك
+                </button>
+            </div>
+
+            <div class="key-input-group">
+                <div class="key-label">
+                    <span>PUBLIC_KEY</span>
+                    <span style="color: #00ff88;">Active</span>
+                </div>
+                <div class="key-display">
+                    <code id="pub-key">sk_live_generating...</code>
+                    <i class="far fa-copy action-icon" onclick="copyValue('pub-key')"></i>
+                </div>
+            </div>
+
+            <div class="key-input-group" style="margin-top: 20px;">
+                <div class="key-label">
+                    <span>SECRET_TOKEN</span>
+                    <span style="color: var(--text-muted);">Restricted</span>
+                </div>
+                <div class="key-display">
+                    <code id="sec-key">••••••••••••••••••••••••</code>
+                    <i class="far fa-eye action-icon" onclick="toggleSecret()"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم التوثيق -->
+        <div class="docs-section">
+            <h3 style="font-size: 14px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-book-open" style="color: var(--accent);"></i> المراجع البرمجية
+            </h3>
+
+            <!-- Endpoint 1 -->
+            <div class="endpoint-wrapper">
+                <div class="method-row">
+                    <span class="badge-method badge-post">POST</span>
+                    <span class="endpoint-path">/v2/orders/create</span>
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted);">إرسال طلب جديد لمعالجته فوراً في النظام.</p>
+                
+                <div class="params-list">
+                    <div class="param-item"><span class="param-n">service_id</span><span class="param-t">Integer</span></div>
+                    <div class="param-item"><span class="param-n">target_url</span><span class="param-t">String</span></div>
+                    <div class="param-item"><span class="param-n">amount</span><span class="param-t">Integer</span></div>
+                </div>
+
+                <div class="code-window">
+                    <div class="code-bar">
+                        <div class="code-dot" style="background: #ff5f56;"></div>
+                        <div class="code-dot" style="background: #ffbd2e;"></div>
+                        <div class="code-dot" style="background: #27c93f;"></div>
+                    </div>
+                    <pre>
+{
+  "service": 105,
+  "link": "https://example.com/id",
+  "quantity": 1000,
+  "runs": 1,
+  "interval": 0
+}</pre>
+                </div>
+            </div>
+
+            <!-- Endpoint 2 -->
+            <div class="endpoint-wrapper">
+                <div class="method-row">
+                    <span class="badge-method badge-get">GET</span>
+                    <span class="endpoint-path">/v2/account/balance</span>
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted);">الاستعلام عن الرصيد الحالي المتوفر للربط.</p>
+            </div>
+        </div>
+
+        <!-- خروج -->
+        <a href="index.html" class="exit-btn">
+            <i class="fas fa-sign-out-alt"></i>
+            إنهاء الجلسة والعودة
+        </a>
+
+    </div>
+
+    <script>
+        let currentSecret = "";
+
+        function generateAccessKeys() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let pub = 'SKL-';
+            let sec = 'SEC-';
+            
+            for (let i = 0; i < 16; i++) {
+                pub += chars.charAt(Math.floor(Math.random() * chars.length));
+                sec += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            
+            document.getElementById('pub-key').innerText = pub;
+            currentSecret = sec;
+            document.getElementById('sec-key').innerText = "••••••••••••••••";
+        }
+
+        function toggleSecret() {
+            const el = document.getElementById('sec-key');
+            if (el.innerText.includes('•')) {
+                el.innerText = currentSecret;
+            } else {
+                el.innerText = "••••••••••••••••";
+            }
+        }
+
+        function copyValue(id) {
+            const text = id === 'sec-key' ? currentSecret : document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text);
+            alert("تم نسخ البيانات إلى الحافظة");
+        }
+
+        window.onload = generateAccessKeys;
+    </script>
+</body>
+</html>

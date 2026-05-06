@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | البطاقات الرقمية</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="sp-main-body">
+
+    <div class="sp-app-wrapper">
+        <header class="sp-top-header">
+            <h1 class="sp-page-title" id="card_title">البطاقات الرقمية</h1>
+        </header>
+
+        <!-- الهيرو الصغير المتغير بناءً على نوع البطاقة -->
+        <div class="sp-mini-hero">
+            <img id="card_banner" src="" class="sp-blur-bg" alt="Card Banner">
+            <div class="sp-hero-info">
+                <h2 id="card_display_name">جاري التحميل...</h2>
+                <span class="sp-id-badge">كود استرداد فوري</span>
+            </div>
+        </div>
+
+        <div class="sp-content-body">
+            <!-- اختيار الفئة/الباقة -->
+            <div class="sp-input-section">
+                <label class="sp-section-label">اختر فئة البطاقة:</label>
+                <div class="custom-dropdown">
+                    <div class="dropdown-header" id="cardPlanHeader">
+                        <span id="selected_card_text">اختر القيمة المطلوبة</span>
+                        <i class="fas fa-chevron-down" id="cardArrow"></i>
+                    </div>
+                    <div id="cardOptions" class="dropdown-options">
+                        <!-- يتم التعبئة عبر JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- معلومات إضافية (اختياري لبعض البطاقات) -->
+            <div class="sp-input-section" style="margin-top: 15px;">
+                <label class="sp-section-label">البريد الإلكتروني (لاستلام الكود):</label>
+                <div class="sp-input-wrapper">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="user_email" placeholder="example@mail.com">
+                </div>
+            </div>
+
+            <!-- منطقة السعر والتأكيد -->
+            <div class="sp-footer-action">
+                <div class="sp-price-row">
+                    <div class="sp-price-summary">
+                        <span class="sp-price-label">المبلغ المطلوب</span>
+                        <h3 id="sp_final_total" class="sp-price-value">$0.00</h3>
+                    </div>
+                    <button id="buyCardBtn" class="sp-pay-btn">
+                         شراء الآن <i class="fas fa-shopping-cart"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- زر العودة -->
+            <div class="sp-back-button-container">
+                <a href="javascript:history.back()" class="sp-back-link">
+                    <i class="fas fa-chevron-right"></i> العودة لقائمة البطاقات
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- حقول مخفية لتخزين البيانات -->
+    <input type="hidden" id="card_price_val" value="0.00">
+
+    <script src="Cards.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

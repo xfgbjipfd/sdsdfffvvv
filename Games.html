@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | اختيار الباقة</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="sp-main-body">
+
+    <div class="sp-app-wrapper">
+        
+        <header class="sp-top-header" style="display: flex; align-items: center; justify-content: center; padding: 15px 0;">
+            <h1 class="sp-page-title">اختيار الباقة</h1>
+        </header>
+
+        <div class="sp-mini-hero">
+            <img id="sp_game_banner" src="" class="sp-blur-bg" alt="Game Banner">
+            <div class="sp-hero-info">
+                <h2 id="sp_game_title">جاري التحميل...</h2>
+                <span class="sp-id-badge">شحن مباشر ID</span>
+            </div>
+        </div>
+
+        <div class="sp-content-body">
+            <label class="sp-section-label">اختر الكمية المطلوبة:</label>
+            <div id="sp_package_container" class="sp-packages-grid">
+                </div>
+
+            <div class="sp-input-section">
+                <label class="sp-section-label">معرف اللاعب (ID)</label>
+                <div class="sp-input-wrapper">
+                    <i class="fas fa-user-tag"></i>
+                    <input type="number" id="sp_player_id" placeholder="0000000000">
+                </div>
+            </div>
+
+            <div class="sp-footer-action">
+                <div class="sp-price-row">
+                    <div class="sp-price-summary">
+                        <span class="sp-price-label">سعر الباقة</span>
+                        <h3 id="sp_final_total" class="sp-price-value">$0.00</h3>
+                    </div>
+                    <button onclick="spHandleOrder()" class="sp-pay-btn">
+                         تأكيد الطلب <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="sp-back-button-container">
+                <a href="javascript:history.back()" class="sp-back-link">
+                    <i class="fas fa-chevron-right"></i> العودة للمتجر
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="games.js"></script>
+</body>
+</html>

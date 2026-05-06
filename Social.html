@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | تفاصيل الرشق</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="sp-main-body">
+
+    <div class="sp-app-wrapper">
+        <header class="sp-top-header">
+            <h1 class="sp-page-title" id="social_title">جاري التحميل...</h1>
+        </header>
+
+        <div class="sp-mini-hero">
+            <img id="social_banner" src="" class="sp-blur-bg" alt="Banner">
+            <div class="sp-hero-info">
+                <h2 id="platform_name">...</h2>
+                <span class="sp-id-badge">خدمة معالجة فورية</span>
+            </div>
+        </div>
+
+        <div class="sp-content-body">
+            <!-- 1. منسدل الجودة -->
+            <div class="sp-input-section">
+                <label class="sp-section-label">اختر نوع الطلب:</label>
+                <div class="custom-dropdown">
+                    <div class="dropdown-header" onclick="toggleDropdown('qualityOptions', 'qualityArrow')">
+                        <span id="selected_text">اضغط هنا لاختيار (متابعين / مشاهدات / لايكات)</span>
+                        <i class="fas fa-chevron-down" id="qualityArrow"></i>
+                    </div>
+                    <div class="dropdown-options" id="qualityOptions"></div>
+                </div>
+            </div>
+
+            <div class="sp-multi-inputs" style="display: flex; gap: 10px; margin-top: 15px;">
+                <!-- 2. منسدل الضمان والسرعة -->
+                <div class="sp-input-section" style="flex: 1;">
+                    <label class="sp-section-label">سرعة التنفيذ:</label>
+                    <div class="custom-dropdown">
+                        <div class="dropdown-header" onclick="toggleDropdown('extraOptions', 'extraArrow')">
+                            <span id="selected_extra_text">اختيار السرعة</span>
+                            <i class="fas fa-chevron-down" id="extraArrow"></i>
+                        </div>
+                        <div class="dropdown-options" id="extraOptions"></div>
+                    </div>
+                </div>
+
+                <!-- 3. منسدل نوع الحسابات -->
+                <div class="sp-input-section" style="flex: 1;">
+                    <label class="sp-section-label">مدة الضمان:</label>
+                    <div class="custom-dropdown">
+                        <div class="dropdown-header" onclick="toggleDropdown('sourceOptions', 'sourceArrow')">
+                            <span id="selected_source_text">تحديد الجودة</span>
+                            <i class="fas fa-chevron-down" id="sourceArrow"></i>
+                        </div>
+                        <div class="dropdown-options" id="sourceOptions"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sp-input-section" style="margin-top: 15px;">
+                <label class="sp-section-label">رابط الحساب / المنشور:</label>
+                <div class="sp-input-wrapper">
+                    <i class="fas fa-link"></i>
+                    <input type="text" id="target_link" placeholder="ضع الرابط هنا...">
+                </div>
+            </div>
+
+            <div class="sp-input-section" style="margin-top: 15px;">
+                <label class="sp-section-label">الكمية المطلوبة:</label>
+                <div class="sp-input-wrapper">
+                    <i class="fas fa-sort-numeric-up-alt"></i>
+                    <input type="number" id="order_quantity" placeholder="أقل كمية 100">
+                </div>
+            </div>
+
+            <div class="sp-footer-action">
+                <div class="sp-price-row">
+                    <div class="sp-price-summary">
+                        <span class="sp-price-label">السعر النهائي</span>
+                        <h3 id="order_total" class="sp-price-value">$0.00</h3>
+                    </div>
+                    <button class="sp-pay-btn" onclick="processOrder()">
+                         تأكيد وإرسال <i class="fas fa-paper-plane"></i>
+                    </button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sp-back-button-container">
+                <a href="javascript:history.back()" class="sp-back-link">
+                    <i class="fas fa-chevron-right"></i> العودة للمتجر
+                </a>
+            </div>
+        </div>
+    </div>
+
+ 
+    <!-- القيم المخفية للإرسال -->
+    <input type="hidden" id="quality_value" value="0.00">
+    <input type="hidden" id="extra_option_value" value="">
+    <input type="hidden" id="source_option_value" value="">
+
+    <script src="Sprinkle.js"></script>
+    <script>
+        function toggleDropdown(optionsId, arrowId) {
+            const options = document.getElementById(optionsId);
+            const arrow = document.getElementById(arrowId);
+            document.querySelectorAll('.dropdown-options').forEach(el => {
+                if (el.id !== optionsId) el.classList.remove('show');
+            });
+            options.classList.toggle('show');
+            if (arrow) arrow.classList.toggle('rotate-arrow');
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.custom-dropdown')) {
+                document.querySelectorAll('.dropdown-options').forEach(el => el.classList.remove('show'));
+            }
+        }
+    </script>
+    <script src="main.js"></script>
+</body>
+</html>

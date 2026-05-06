@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | لوحة الشركاء</title>
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <style>
+        /* تحسينات مخصصة لصفحة الإحالة - مظهر احترافي هادئ */
+        .referral-container {
+            padding: 20px 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* كرت الأرباح بلمسة زجاجية مطفية بدون توهج صاخب */
+        .earning-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .earning-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .earning-amount {
+            font-size: 36px;
+            font-weight: 800;
+            color: #fff; /* تغيير من اللون النيوني للأبيض لراحة العين */
+            margin-bottom: 20px;
+        }
+
+        .earning-amount span {
+            color: var(--accent); /* تمييز العملة فقط باللون */
+        }
+
+        /* زر التحويل */
+        .withdraw-btn {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .withdraw-btn:active { transform: scale(0.98); opacity: 0.9; }
+
+        /* شبكة الإحصائيات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .stat-item i {
+            font-size: 18px;
+            color: var(--accent);
+            margin-bottom: 10px;
+            opacity: 0.8;
+        }
+
+        .stat-val {
+            display: block;
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .stat-label {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* صندوق الرابط */
+        .link-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .link-box {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-top: 10px;
+        }
+
+        #referralLink {
+            flex-grow: 1;
+            font-size: 12px;
+            color: var(--text-muted);
+            direction: ltr;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding-right: 10px;
+        }
+
+        .copy-btn {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* منطقة التعليمات */
+        .info-note {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            background: rgba(0, 191, 255, 0.03);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border-right: 3px solid var(--accent);
+        }
+
+        .info-note p {
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+            color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-layout">
+        <header class="top-nav-brand">
+            <button class="header-icon-btn side-btn" onclick="window.history.back()">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <div class="brand-small">Sky<span>post</span></div>
+            <div style="width: 38px;"></div> 
+        </header>
+
+        <main class="referral-container">
+            
+            <div class="earning-card">
+                <span class="earning-label">الرصيد المتاح للسحب</span>
+                <div class="earning-amount">0.00<span>$</span></div>
+                <button class="withdraw-btn">
+                    <i class="fas fa-exchange-alt"></i> تحويل إلى المحفظة
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <i class="fas fa-user-friends"></i>
+                    <span class="stat-val">0</span>
+                    <span class="stat-label">إجمالي المحالين</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span class="stat-val">10%</span>
+                    <span class="stat-label">نسبة العمولة</span>
+                </div>
+            </div>
+
+            <div class="info-note">
+                <i class="fas fa-lightbulb" style="color: var(--accent);"></i>
+                <p>
+                    اربح <b>10%</b> عمولة فورية عن كل عملية شراء يقوم بها أصدقاؤك المسجلون عبر رابطك الخاص.
+                </p>
+            </div>
+
+            <div class="link-section">
+                <span style="font-size: 13px; font-weight: 600; color: #fff;">رابط الإحالة الخاص بك:</span>
+                <div class="link-box">
+                    <span id="referralLink">جاري تجهيز الرابط...</span>
+                    <button class="copy-btn" onclick="copyReferralLink()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <p style="font-size: 11px; color: var(--text-muted); margin-top: 12px; text-align: center;">
+                    شارك هذا الرابط مع أصدقائك وابدأ بجني الأرباح.
+                </p>
+            </div>
+
+        </main>
+    </div>
+
+    <div id="toast" style="display:none; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 12px 25px; border-radius: 12px; font-weight: 700; font-size: 13px; z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">تم نسخ الرابط بنجاح</div>
+
+    
+
+    <script>
+    // دالة لتوليد 7 رموز عشوائية (أرقام وحروف)
+    function generateRandomPath(length) {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let result = '';
+        for (let i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+    }
+
+    // تنفيذ التوليد فوراً بمجرد قراءة المتصفح للكود وقبل انتظار تحميل الصور
+    (function() {
+        const baseUrl = "https://t.me/Skypos_Bot/app?startapp=";
+        const fullLink = baseUrl + generateRandomPath(7);
+        
+        // التأكد من وضع الرابط في العنصر عند توفره في الـ DOM
+        document.addEventListener("DOMContentLoaded", function() {
+            const linkElement = document.getElementById('referralLink');
+            if (linkElement) {
+                linkElement.innerText = fullLink;
+            }
+        });
+    })();
+
+    // دالة النسخ المعدلة
+    function copyReferralLink() {
+        const linkText = document.getElementById('referralLink').innerText;
+        // منع النسخ إذا كان النص لا يزال يحتوي على كلمة "جاري"
+        if (linkText.includes("جاري")) return;
+
+        navigator.clipboard.writeText(linkText).then(() => {
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        });
+    }
+</script>
+
+</body>
+</html>
