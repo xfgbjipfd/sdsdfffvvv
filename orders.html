@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | طلباتي</title>
+    <!-- استدعاء ملف الستايل الخاص بك -->
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* حاوية الرسالة الفارغة بتصميم يتناسب مع نظام Glassmorphism */
+        .empty-orders-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 50vh;
+            text-align: center;
+        }
+
+        .empty-orders-state i {
+            font-size: 80px;
+            color: var(--accent-soft);
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px var(--accent-soft));
+        }
+
+        .empty-orders-state p {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .back-to-shop {
+            background: var(--accent-soft);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 10px 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 800;
+            transition: 0.3s;
+        }
+
+        .back-to-shop:active {
+            transform: scale(0.95);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="main-layout">
+        <!-- الهيدر بنفس نمط صفحة التصنيفات -->
+        <header class="top-nav-brand">
+            <button class="header-icon-btn side-btn" onclick="history.back()">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="brand-small">سجل<span> الطلبات</span></div>
+            <div style="width: 40px;"></div> <!-- للحفاظ على التوازن -->
+        </header>
+
+        <!-- شريط التنقل العلوي المقتبس من نظام التصنيفات الخاص بك -->
+        <div class="tabs-scroll-area">
+            <button class="tab-btn active" onclick="filterOrders('all', this)">الكل</button>
+            <button class="tab-btn" onclick="filterOrders('pending', this)">قيد التنفيذ</button>
+            <button class="tab-btn" onclick="filterOrders('completed', this)">المكتملة</button>
+            <button class="tab-btn" onclick="filterOrders('cancelled', this)">الملغية</button>
+        </div>
+
+        <main class="store-front">
+            <!-- قسم الرسالة الفارغة في المنتصف -->
+            <div class="empty-orders-state">
+                <i class="fas fa-receipt"></i>
+                <p>ليس لديك طلبات في هذا القسم حالياً</p>
+                <a href="index.html" class="back-to-shop">تصفح الخدمات</a>
+            </div>
+        </main>
+    </div>
+
+    
+
+    <script src="main.js"></script>
+    <script>
+        // دالة تبديل التابات بنفس منطق صفحة التصنيفات
+        function filterOrders(category, element) {
+            // إزالة الكلاس النشط من جميع الأزرار
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            // إضافة الكلاس للزر الذي تم الضغط عليه
+            element.classList.add('active');
+            
+            // ملاحظة: بما أنك طلبت عدم وجود طلبات وهمية، ستظل الرسالة الفارغة ظاهرة دائماً
+        }
+    </script>
+</body>
+</html>

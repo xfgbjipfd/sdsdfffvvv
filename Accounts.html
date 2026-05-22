@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Skypost | حسابات سوشيل ميديا</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* تنسيقات مطابقة تماماً لملف القوائم lists.html */
+        .categories-list-vertical {
+            display: flex;
+            flex-direction: column;
+            padding: 0 10px;
+            background: transparent;
+        }
+
+        .category-row-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 5px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .category-row-card:last-child {
+            border-bottom: none;
+        }
+
+        .category-row-card:active {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .category-icon-box {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+        }
+
+        /* تنسيق الأيقونات الدائرية الملونة للسوشيل ميديا */
+        .category-icon-box i {
+            font-size: 26px;
+            transition: transform 0.3s ease;
+        }
+
+        .icon-instagram { color: #e1306c; text-shadow: 0 0 15px rgba(225, 48, 108, 0.3); }
+        .icon-tiktok { color: #ffffff; text-shadow: 0 0 15px rgba(255, 255, 255, 0.4); }
+        .icon-facebook { color: #1877f2; text-shadow: 0 0 15px rgba(24, 119, 242, 0.3); }
+        .icon-youtube { color: #ff0000; text-shadow: 0 0 15px rgba(255, 0, 0, 0.3); }
+        .icon-twitter { color: #1da1f2; text-shadow: 0 0 15px rgba(29, 161, 242, 0.3); }
+        .icon-telegram { color: #0088cc; text-shadow: 0 0 15px rgba(0, 136, 204, 0.3); }
+
+        .category-info {
+            flex-grow: 1;
+        }
+
+        .category-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .category-info p {
+            font-size: 11px;
+            color: #777;
+            margin: 3px 0 0 0;
+        }
+
+        .arrow-indicator {
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .item-price-tag {
+            color: #00bfff;
+            font-weight: 800;
+            font-size: 13px;
+            background: rgba(0, 191, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 10px;
+        }
+
+        /* تصميم شريط الأقسام العلوي المتجاوب */
+        .sp-tabs-container {
+            display: flex;
+            gap: 10px;
+            padding: 10px 15px;
+            overflow-x: auto;
+            scrollbar-width: none; /* لإخفاء السكرول في فايرفوكس */
+        }
+        .sp-tabs-container::-webkit-scrollbar {
+            display: none; /* لإخفاء السكرول في كروم وسفاري */
+        }
+
+        .sp-tab-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #8b95a7;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sp-tab-btn.active {
+            background: rgba(0, 191, 255, 0.15);
+            color: #00bfff;
+            border-color: #00bfff;
+        }
+
+        /* نافذة المعاينة والطلب المنبثقة (Modal) */
+        .sp-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            padding: 20px;
+        }
+
+        .sp-modal.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .sp-modal-content {
+            background: #111111;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            padding: 25px;
+            position: relative;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .sp-modal.show .sp-modal-content {
+            transform: scale(1);
+        }
+
+        .sp-close-modal {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sp-modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .sp-modal-header i {
+            font-size: 45px;
+            margin-bottom: 10px;
+        }
+
+        .sp-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .sp-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 13px;
+        }
+
+        .sp-detail-label { color: #8b95a7; }
+        .sp-detail-value { color: #fff; font-weight: 600; }
+        .sp-detail-value.price { color: #00bfff; font-size: 16px; }
+
+        .sp-modal-btn {
+            background: #00bfff;
+            color: #000;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            margin-top: 20px;
+            cursor: pointer;
+            
+            transition: 0.2s;
+        }
+
+        .sp-modal-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="main-layout">
+        <main class="list-container">
+            
+            <div class="category-header">
+                <div class="icon-btn" style="width: 45px; height: 45px; font-size: 20px;">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div>
+                    <h2 style="color: #fff; font-size: 18px; font-weight: 800; margin: 0;">حسابات سوشيل ميديا</h2>
+                    <p style="color: #666; font-size: 11px; margin-top: 2px;">حسابات آمنة ومضمونة 100%</p>
+                </div>
+            </div>
+
+            <div class="sp-tabs-container">
+                <button class="sp-tab-btn active" onclick="filterCategory('all')">الكل</button>
+                <button class="sp-tab-btn" onclick="filterCategory('instagram')">انستغرام</button>
+                <button class="sp-tab-btn" onclick="filterCategory('tiktok')">تيك توك</button>
+                <button class="sp-tab-btn" onclick="filterCategory('telegram')">تيليجرام</button>
+            </div>
+
+            <div class="categories-list-vertical" id="accountsList"></div>
+
+            <div style="margin-top: 40px; display: flex; justify-content: center; padding-bottom: 60px;">
+                <a href="index.html" class="view-more" style="padding: 12px 40px; font-size: 14px; text-decoration: none; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-arrow-right"></i> العودة للرئيسية
+                </a>
+            </div>
+        </main>
+    </div>
+
+    <div class="sp-modal" id="accountModal">
+        <div class="sp-modal-content">
+            <button class="sp-close-modal" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="sp-modal-header">
+                <i id="modalIcon" class=""></i>
+                <div class="sp-modal-title" id="modalTitle">اسم الحساب</div>
+            </div>
+            <div class="sp-modal-body">
+                <div class="sp-detail-row">
+                    <span class="sp-detail-label">المنصة:</span>
+                    <span class="sp-detail-value" id="modalPlatform">انستقرام</span>
+                </div>
+                <div class="sp-detail-row">
+                    <span class="sp-detail-label">عدد المتابعين:</span>
+                    <span class="sp-detail-value" id="modalFollowers">10K</span>
+                </div>
+                <div class="sp-detail-row">
+                    <span class="sp-detail-label">سنة الإنشاء:</span>
+                    <span class="sp-detail-value" id="modalYear">2021</span>
+                </div>
+                <div class="sp-detail-row">
+                    <span class="sp-detail-label">طبيعة الحساب:</span>
+                    <span class="sp-detail-value" id="modalType">متفاعل / حقيقي</span>
+                </div>
+                <div class="sp-detail-row">
+                    <span class="sp-detail-label">السعر الإجمالي:</span>
+                    <span class="sp-detail-value price" id="modalPrice">$0.00</span>
+                </div>
+                
+                <button class="sp-modal-btn" onclick="confirmPurchase()">تأكيد الشراء الفوري</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const platforms = [
+  {
+    name: "انستغرام",
+    filter: "instagram",
+    icon: "fab fa-instagram icon-instagram",
+    baseRate: 0.28,
+    engagementFactor: 1.2,
+    followerDist: [
+      { w: 0.55, min: 1200, max: 12000 },
+      { w: 0.30, min: 12000, max: 80000 },
+      { w: 0.12, min: 80000, max: 300000 },
+      { w: 0.03, min: 300000, max: 800000 }
+    ],
+    types: ["شخصي / عام", "تجاري", "علامة شخصية", "منوعات"],
+    desc: [
+      "حساب نشط مع تفاعل عضوي مستقر",
+      "جمهور حقيقي ونمو طبيعي",
+      "مناسب للإعلانات والشراكات",
+      "معدل تفاعل جيد مقارنة بالحجم"
+    ]
+  },
+  {
+    name: "تيك توك",
+    filter: "tiktok",
+    icon: "fab fa-tiktok icon-tiktok",
+    baseRate: 0.22,
+    engagementFactor: 1.4,
+    followerDist: [
+      { w: 0.65, min: 1500, max: 20000 },
+      { w: 0.25, min: 20000, max: 120000 },
+      { w: 0.10, min: 120000, max: 600000 }
+    ],
+    types: ["ترفيهي", "منوعات", "تعليمي", "علامة شخصية"],
+    desc: [
+      "قابل للانتشار السريع عبر المقاطع القصيرة",
+      "تفاعل مرتفع مقارنة بعدد المتابعين",
+      "جمهور نشط ومتفاعل يوميًا",
+      "فرصة نمو عضوي قوية"
+    ]
+  },
+  {
+    name: "تيليجرام",
+    filter: "telegram",
+    icon: "fab fa-telegram icon-telegram",
+    baseRate: 0.14,
+    engagementFactor: 1.0,
+    followerDist: [
+      { w: 0.6, min: 1000, max: 15000 },
+      { w: 0.3, min: 15000, max: 100000 },
+      { w: 0.1, min: 100000, max: 400000 }
+    ],
+    types: ["قناة تيليجرام", "مجموعة تيليجرام"],
+    desc: [
+      "نشاط يومي وتفاعل ثابت",
+      "قناة مناسبة للإعلانات",
+      "جمهور حقيقي غير مكرر",
+      "جاهز للاستخدام الفوري"
+    ]
+  }
+];
+
+function rand(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function weightedPick(arr) {
+  let total = arr.reduce((s, i) => s + i.w, 0);
+  let r = Math.random() * total;
+
+  for (const item of arr) {
+    r -= item.w;
+    if (r <= 0) return item;
+  }
+  return arr.at(-1);
+}
+
+function generateYear() {
+  return 2015 + Math.floor(Math.random() * 11);
+}
+
+function generateFollowers(platform) {
+  const range = weightedPick(platform.followerDist);
+  return Math.floor(
+    Math.random() * (range.max - range.min) + range.min
+  );
+}
+
+function format(num) {
+  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
+  if (num >= 1_000) return (num / 1_000).toFixed(num >= 100_000 ? 0 : 1) + "K";
+  return String(num);
+}
+
+function priceModel(platform, followers) {
+  const noise = 0.85 + Math.random() * 0.3;
+  const engagementBoost =
+    1 + Math.random() * 0.25 * platform.engagementFactor;
+
+  return +(
+    (followers / 100) *
+    platform.baseRate *
+    noise *
+    engagementBoost
+  ).toFixed(2);
+}
+
+function generateTitle(platform, followers, subtype) {
+  const f = format(followers);
+
+  if (platform.filter === "telegram")
+    return `${subtype} ${f}`.trim();
+
+  return `${platform.name} ${f}`;
+}
+
+function pickType(platform) {
+  return rand(platform.types);
+}
+
+function pickDesc(platform) {
+  return rand(platform.desc);
+}
+
+const accountsData = Array.from({ length: 100 }, (_, i) => {
+  const platform = rand(platforms);
+  const followers = generateFollowers(platform);
+
+  const subtype =
+    platform.filter === "telegram" ? rand(platform.types) : null;
+
+  return {
+    id: i + 1,
+    platform: platform.name,
+    catFilter: platform.filter,
+    title: generateTitle(platform, followers, subtype),
+    desc: pickDesc(platform),
+    followers: followers.toLocaleString("en-US"),
+    year: generateYear(),
+    type: pickType(platform),
+    price: priceModel(platform, followers),
+    iconClass: platform.icon
+  };
+}); 
+
+        let selectedAccount = null;
+        let currentFilter = 'all';
+
+        // 2. دالة عرض الحسابات بتنسيق القائمة الجديد والمطابق
+        function renderAccounts() {
+            const container = document.getElementById('accountsList');
+            if(!container) return;
+            container.innerHTML = '';
+            let found = false;
+
+            accountsData.forEach(acc => {
+                if (currentFilter === 'all' || currentFilter === acc.catFilter) {
+                    const card = document.createElement('div');
+                    card.className = 'category-row-card';
+                    
+                    card.innerHTML = `
+                        <div class="category-icon-box">
+                            <i class="${acc.iconClass}"></i>
+                        </div>
+                        <div class="category-info">
+                            <h3>${acc.title}</h3>
+                            <p>${acc.desc}</p>
+                        </div>
+                        <div class="item-price-tag">$${acc.price.toFixed(2)}</div>
+                        <div class="arrow-indicator">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                    `;
+                    
+                    card.onclick = () => openModal(acc);
+                    container.appendChild(card);
+                    found = true;
+                }
+            });
+
+            if (!found) {
+                container.innerHTML = "<p style='color:#777; text-align:center; padding: 40px;'>لا توجد حسابات متوفرة في هذا القسم حالياً.</p>";
+            }
+        }
+
+        // 3. دالة فلترة الأقسام وتبديل الأزرار النشطة
+        function filterCategory(category) {
+            currentFilter = category;
+            
+            // تحديث الأزرار النشطة
+            const buttons = document.querySelectorAll('.sp-tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // إضافة كلاس active للزر الذي تم ضغطه
+            event.currentTarget.classList.add('active');
+            
+            renderAccounts();
+        }
+
+        // 4. فتح نافذة التفاصيل (Modal)
+        function openModal(account) {
+            selectedAccount = account;
+            document.getElementById('modalIcon').className = account.iconClass;
+            document.getElementById('modalTitle').innerText = account.title;
+            document.getElementById('modalPlatform').innerText = account.platform;
+            document.getElementById('modalFollowers').innerText = account.followers;
+            document.getElementById('modalYear').innerText = account.year;
+            document.getElementById('modalType').innerText = account.type;
+            document.getElementById('modalPrice').innerText = `$${account.price.toFixed(2)}`;
+
+            document.getElementById('accountModal').classList.add('show');
+        }
+
+        // 5. إغلاق النافذة
+        function closeModal() {
+            document.getElementById('accountModal').classList.remove('show');
+        }
+
+        // 6. تأكيد الشراء
+        function confirmPurchase() {
+            if(!selectedAccount) return;
+            alert("لا يمكن إتمام العملية: رصيدك غير كافٍ.");
+            console.log("بيانات حساب سوشيل ميديا تم طلبها:", selectedAccount);
+            closeModal();
+        }
+
+        // تشغيل الرندر الأولي عند تحميل الصفحة
+        document.addEventListener("DOMContentLoaded", renderAccounts);
+    </script>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const tg = window.Telegram?.WebApp;
+
+    if (tg && tg.BackButton) {
+        tg.BackButton.show();
+
+        tg.BackButton.onClick(() => {
+            tg.BackButton.hide();
+            window.location.href = "index.html"; // غيّرها للصفحة المطلوبة
+        });
+    }
+});
+</script>
+    <script src="main.js"></script>
+    <script src="search.js"></script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Skypost | البحث الذكي</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .search-page-container {
+            padding: 15px 10px;
+            padding-bottom: 80px; 
+        }
+        
+        .search-box-wrapper {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .search-box-wrapper:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(0, 191, 255, 0.25);
+        }
+
+        .search-box-wrapper input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 15px;
+            font-family: var(--cairo-font);
+            margin-right: 10px;
+        }
+
+        .search-box-wrapper i.search-icon {
+            color: var(--accent);
+            font-size: 16px;
+        }
+
+        .clear-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 5px;
+            display: none;
+        }
+
+        .categories-list-vertical {
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+        }
+
+        .category-row-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 5px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            animation: fadeInResult 0.3s ease-out forwards;
+        }
+
+        .category-row-card:last-child {
+            border-bottom: none;
+        }
+
+        .category-row-card:active {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        @keyframes fadeInResult {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .category-icon-box {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+        }
+
+        .category-icon-box img {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .category-info {
+            flex-grow: 1;
+        }
+
+        .category-info h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .category-info p {
+            font-size: 11px;
+            color: #777;
+            margin: 3px 0 0 0;
+        }
+
+        .item-price-tag {
+            color: #00bfff;
+            font-weight: 800;
+            font-size: 13px;
+            background: rgba(0, 191, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+            margin-left: 10px;
+        }
+
+        .arrow-indicator {
+            color: rgba(255, 255, 255, 0.15);
+            font-size: 12px;
+        }
+        
+        .no-results {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+            padding: 40px 20px;
+            line-height: 1.8;
+        }
+        
+        .no-results span {
+            color: var(--accent);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="main-layout">
+
+    <header class="top-nav-brand">
+        <button class="header-icon-btn side-btn" onclick="window.location.href='index.html'">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+        <div class="brand-small">Sky<span>post</span></div>
+        <div class="header-balance" onclick="window.location.href='add-balance.html'">
+            <span>0.00$</span>
+            <i class="fas fa-wallet"></i>
+        </div>
+    </header>
+
+    <main class="store-front search-page-container">
+        
+        <div class="search-box-wrapper">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="searchInput" placeholder="ابحث عن تطبيق، لعبة، دولة، أو خدمة..." onkeyup="performLiveSearch()" autofocus>
+            <button id="clearBtn" class="clear-btn" onclick="clearSearch()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div id="searchResults" class="categories-list-vertical"></div>
+
+    </main>
+
+    <nav class="bottom-nav-bar">
+        <a href="orders.html" class="bottom-nav-item">
+            <i class="fas fa-box"></i>
+            <span>طلباتي</span>
+        </a>
+        <a href="index.html" class="bottom-nav-item">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+        <a href="search.html" class="bottom-nav-item active">
+            <i class="fas fa-search"></i>
+            <span>البحث</span>
+        </a>
+    </nav>
+
+</div>
+
+<script>
+// إعدادات الأقسام والملفات المستهدفة كما هي في ملف lists.html
+const catConfig = {
+    'social':   { file: 'Social.html' },
+    'games':    { file: 'Games.html' },
+    'subs':     { file: 'Subscriptions.html' },
+    'numbers':  { file: 'Numbers.html' },
+    'recovery': { file: 'Recovery.html' },
+    'cards':    { file: 'Cards.html' }
+};
+
+// قاعدة البيانات الشاملة والمطابقة 100% لملف lists.html مع إضافة الكلمات المفتاحية الذكية الذاتية
+const servicesDatabase = [
+    // --- قسم السوشيال ميديا (social) ---
+    { img: 'https://i.ibb.co/9mVQqm1f/unnamed.webp', title: 'خدمات انستغرام', desc: 'رشق وتزويد لايكات', price: 'حسب الطلب', cat: 'social', keywords: ['انستا', 'انستغرام', 'انستقرام', 'لايكات', 'رشق انستا', 'فولو', 'متابعين', 'instagram', 'insta'] },
+    { img: 'https://i.ibb.co/yBpKspyh/unnamed-1.webp', title: 'خدمات تيك توك', desc: 'زيادة مشاهدات وفولو', price: 'حسب الطلب', cat: 'social', keywords: ['تيك توك', 'تيكتوك', 'مشاهدات تيك', 'فولو تيك', 'رشق تيك', 'tiktok', 'tik tok'] },
+    { img: 'https://i.ibb.co/y3Npg0S/image.jpg', title: 'خدمات فيسبوك', desc: 'رشق متابعين وتفاعل', price: 'حسب الطلب', cat: 'social', keywords: ['فيس', 'فيسبوك', 'بيج', 'متابعين فيسبوك', 'تفاعل', 'لايكات فيس', 'facebook', 'fb'] },
+    { img: 'https://i.ibb.co/LX2Pm0Lb/images.png', title: 'خدمات يوتيوب', desc: 'مشتركين ومشاهدات', price: 'حسب الطلب', cat: 'social', keywords: ['يوتيوب', 'يوتوب', 'مشتركين يوتيوب', 'ساعات', 'مشاهدات يوتيوب', 'قناة يوتيوب', 'youtube', 'yt'] },
+    { img: 'https://i.ibb.co/v6S0VtsL/image.jpg', title: 'خدمات سناب شات', desc: 'إضافات ونشر حسابات', price: 'حسب الطلب', cat: 'social', keywords: ['سناب', 'سناب شات', 'سنابة', 'اضافات سناب', 'نشر حسابات', 'snapchat', 'snap'] },
+    { img: 'https://i.ibb.co/WvmRpH4t/image.jpg', title: 'خدمات تيليجرام', desc: 'أعضاء قنوات وجروبات', price: 'حسب الطلب', cat: 'social', keywords: ['تيليجرام', 'تليجرام', 'تلغرام', 'اعضاء قنوات', 'جروبات تلي', 'رشق تلي', 'telegram', 'tg'] },
+    
+    // --- قسم الألعاب (games) ---
+    { img: 'https://i.ibb.co/QFc1GdRJ/pubg.jpg', title: 'PUBG Mobile', desc: 'شحن شدات UC', price: '$0.99', cat: 'games', key: 'pubg', keywords: ['ببجي', 'بوجي', 'شدات ببجي', 'يو سي', 'شحن ببجي', 'pubg', 'uc'] },
+    { img: 'https://i.ibb.co/PvTwjfY0/yalla.jpg', title: 'Yalla Ludo', desc: 'شحن ذهب والماس', price: '$1.50', cat: 'games', key: 'yalla', keywords: ['يلا لودو', 'لودو', 'جواهر لودو', 'ماس لودو', 'ذهب لودو', 'yalla ludo', 'ludo'] },
+    { img: 'https://i.ibb.co/ffMMb6J/coc.png', title: 'Clash of Clans', desc: 'شحن جواهر', price: '$4.99', cat: 'games', key: 'coc', keywords: ['كلاش', 'كلاش اوف كلانز', 'جواهر كلاش', 'قرية كلاش', 'clash of clans', 'coc'] },
+    { img: 'https://i.ibb.co/nMDrR8T9/ml.jpg', title: 'Mobile Legends', desc: 'شحن دايموند', price: '$2.00', cat: 'games', key: 'ml', keywords: ['موبايل ليجند', 'موبايل ليجندز', 'دايموند', 'جواهر ليجند', 'mobile legends', 'ml'] },
+    { img: 'https://i.ibb.co/Qvyb22HC/cr.png', title: 'Clash Royale', desc: 'شحن جواهر', price: '$4.99', cat: 'games', key: 'cr', keywords: ['كلاش رويال', 'جواهر كلاش رويال', 'clash royale', 'cr'] },
+    { img: 'https://i.ibb.co/yn35pLqP/images.jpg', title: 'Free Fire', desc: 'شحن جواهر', price: '$4.99', cat: 'games', key: 'ff', keywords: ['فري فاير', 'فريفير', 'جواهر فري فاير', 'شحن فري فاير', 'free fire', 'ff'] },
+    
+    // --- قسم الاشتراكات والتوثيق (subs) ---
+    { img: 'https://i.ibb.co/HpDPs9sV/image.jpg', title: 'تليجرام بريميوم', desc: 'اشتراك رسمي', price: '$3.99', cat: 'subs', keywords: ['تليجرام بريميوم', 'تيليجرام بريميوم', 'نجمة تلي', 'اشتراك تليجرام', 'telegram premium', 'premium'] },
+    { img: 'https://i.ibb.co/LdzgMYDG/image.jpg', title: 'عملات تيك توك', desc: 'شحن رصيد محفظة', price: '$1.20', cat: 'subs', keywords: ['عملات تيك توك', 'عملات تيكتوك', 'نقاط تيك توك', 'شحن تيك توك', 'tiktok coins'] },
+    { img: 'https://i.ibb.co/tT6ntw06/image.jpg', title: 'توثيق انستغرام', desc: 'العلامة الزرقاء', price: '$14.99', cat: 'subs', keywords: ['توثيق انستا', 'علامة زرقاء', 'توثيق انستغرام', 'نجمة زرقاء', 'instagram verification', 'meta'] },
+    { img: 'https://i.ibb.co/YFbXyYKP/image.jpg', title: 'توثيق فيسبوك', desc: 'العلامة الزرقاء', price: '$14.99', cat: 'subs', keywords: ['توثيق فيسبوك', 'توثيق فيس', 'العلامة الزرقاء فيس', 'facebook verification'] },
+    { img: 'https://i.ibb.co/Y710wdjJ/image.jpg', title: 'توثيق تويتر', desc: 'العلامة الزرقاء', price: '$14.99', cat: 'subs', keywords: ['توثيق تويتر', 'توثيق اكس', 'تويتر بلو', 'twitter blue', 'x verification'] },
+    { img: 'https://i.ibb.co/DDmpYJLy/image.jpg', title: 'نتفلكس', desc: 'اشتراك مشاهدة أفلام ومسلسلات', price: '$5.99', cat: 'subs', keywords: ['نتفلكس', 'نتفليكس', 'حساب نتفلكس', 'شاشة نتفلكس', 'مسلسلات', 'netflix'] },
+    { img: 'https://i.ibb.co/Kc6dgK9t/image.jpg', title: 'سبوتيفاي بريميوم', desc: 'استماع بدون إعلانات', price: '$3.99', cat: 'subs', keywords: ['سبوتيفاي', 'سبوتفاي', 'اغاني', 'بريميوم سبوتيفاي', 'spotify premium'] },
+    { img: 'https://i.ibb.co/kVVPPXRZ/image.jpg', title: 'يوتيوب بريميوم', desc: 'مشاهدة بدون إعلانات', price: '$4.99', cat: 'subs', keywords: ['يوتيوب بريميوم', 'يوتوب بريميوم', 'يوتيوب بدون اعلانات', 'youtube premium'] },
+    { img: 'https://i.ibb.co/Qv3CX2rs/image.jpg', title: 'شاهد VIP', desc: 'اشتراك مسلسلات وأفلام عربية', price: '$4.99', cat: 'subs', keywords: ['شاهد', 'شاهد vip', 'vip', 'shahid', 'مسلسلات عربية'] },
+    { img: 'https://i.ibb.co/YFwy4drD/image.jpg', title: 'OSN+', desc: 'اشتراك أفلام ومسلسلات', price: '$5.99', cat: 'subs', keywords: ['او اس ان', 'osn', 'osn+', 'اشتراك osn'] },
+    { img: 'https://i.ibb.co/JPTrzKc/image.jpg', title: 'أمازون برايم فيديو', desc: 'اشتراك فيديو وأفلام', price: '$4.99', cat: 'subs', keywords: ['امازون برايم', 'برايم فيديو', 'amazon prime', 'prime video'] },
+    
+    // --- قسم الأرقام الدولية (numbers) ---
+    { img: 'https://i.ibb.co/JWwQN66f/image.jpg', title: 'أرقام أمريكا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم امريكي', 'امريكا', 'تفعيل واتساب امريكي', 'رقم وهمي', 'usa', 'america'] },
+    { img: 'https://i.ibb.co/tTw0hyK1/image.jpg', title: 'أرقام بريطانيا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم بريطاني', 'بريطانيا', 'رقم وهمي بريطاني', 'uk', 'britain'] },
+    { img: 'https://i.ibb.co/1fNNXB9t/image.jpg', title: 'أرقام ألمانيا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم الماني', 'المانيا', 'germany', 'germany number'] },
+    { img: 'https://i.ibb.co/G4NkCPjC/image.jpg', title: 'أرقام روسيا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم روسي', 'روسيا', 'russia'] },
+    { img: 'https://i.ibb.co/qLsdXbPg/image.jpg', title: 'أرقام كندا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم كندي', 'كندا', 'canada'] },
+    { img: 'https://i.ibb.co/qYFySLKD/image.jpg', title: 'أرقام فرنسا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم فرنسي', 'فرنسا', 'france'] },
+    { img: 'https://i.ibb.co/WWy010bh/ITA.jpg', title: 'أرقام إيطاليا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم ايطالي', 'ايطاليا', 'italy'] },
+    { img: 'https://i.ibb.co/0jqsqCFm/214.jpg', title: 'أرقام إسبانيا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم اسباني', 'اسبانيا', 'spain'] },
+    { img: 'https://i.ibb.co/Df1Tgqc0/230.jpg', title: 'أرقام تركيا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم تركي', 'تركيا', 'turkey'] },
+    { img: 'https://i.ibb.co/TMKxDNct/128.jpg', title: 'أرقام الهند', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم هندي', 'الهند', 'india'] },
+    { img: 'https://i.ibb.co/9xyFm0c/86.jpg', title: 'أرقام الصين', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم صيني', 'الصين', 'china'] },
+    { img: 'https://i.ibb.co/939qxHwS/136.jpg', title: 'أرقام اليابان', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم ياباني', 'اليابان', 'japan'] },
+    { img: 'https://i.ibb.co/8gT5P61h/74.jpg', title: 'أرقام البرازيل', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم برازيلي', 'البرازيل', 'brazil'] },
+    { img: 'https://i.ibb.co/Sp7YVHY/59.jpg', title: 'أرقام أستراليا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم استرالي', 'استراليا', 'australia'] },
+    { img: 'https://i.ibb.co/LhcY8QPK/175.jpg', title: 'أرقام هولندا', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم هولندي', 'هولندا', 'netherlands'] },
+    { img: 'https://i.ibb.co/XmFSmMb/219.jpg', title: 'أرقام السويد', desc: 'تفعيل لكل التطبيقات', price: 'PRT', cat: 'numbers', keywords: ['رقم سويدي', 'السويد', 'sweden'] },
+    
+    // --- قسم استرجاع الحسابات (recovery) ---
+    { img: 'https://i.ibb.co/JWvcvjvH/image.jpg', title: 'استرجاع انستا', desc: 'استرداد حساب', price: 'حسب الطلب', cat: 'recovery', keywords: ['استرجاع انستا', 'تعطيل انستا', 'حساب انستغرام مخترق', 'فك بند انستا'] },
+    { img: 'https://i.ibb.co/hJ2C16By/image.jpg', title: 'استرجاع فيسبوك', desc: 'استرداد حساب', price: 'حسب الطلب', cat: 'recovery', keywords: ['استرجاع فيس', 'حساب فيسبوك معطل', 'اختراق فيسبوك'] },
+    { img: 'https://i.ibb.co/G401FjTD/image.jpg', title: 'استرجاع جوجل', desc: 'استرداد حساب', price: 'حسب الطلب', cat: 'recovery', keywords: ['استرجاع جوجل', 'اميل جوجل', 'جيميل معطل', 'gmail recovery'] },
+    { img: 'https://i.ibb.co/p62NJq9C/image.jpg', title: 'استرجاع سناب شات', desc: 'استرداد حساب', price: 'حسب الطلب', cat: 'recovery', keywords: ['استرجاع سناب', 'قفل سناب', 'حساب سناب شات'] },
+    { img: 'https://i.ibb.co/ds7PKb13/image.jpg', title: 'استرجاع تيك توك', desc: 'استرداد حساب', price: 'حسب الطلب', cat: 'recovery', keywords: ['استرجاع تيك توك', 'تيكتوك محظور'] }, 
+    
+    // --- قسم البطاقات ورموز الاسترداد (cards) ---
+    { img: 'https://i.ibb.co/Y45sCwNn/images-2.jpg', title: 'بطاقات جوجل بلاي', desc: 'كروت شحن جوجل بلاي USA', price: 'PRT', cat: 'cards', keywords: ['بطاقات جوجل', 'كارت جوجل', 'جوجل بلاي امريكي', 'google play'] },
+    { img: 'https://i.ibb.co/zhr6rxyv/image.jpg', title: 'بطاقات آيتونز', desc: 'كروت شحن أبل ستور USA', price: 'PRT', cat: 'cards', keywords: ['ايتونز', 'آيتونز', 'كارت ابل', 'ابل ستور', 'itunes', 'apple store'] },
+    { img: 'https://i.ibb.co/wFB3HZGV/images-4.jpg', title: 'ريزر جولد', desc: 'شحن محفظة Razer Gold', price: 'PRT', cat: 'cards', keywords: ['ريزر جولد', 'ريزر', 'razer gold', 'كروت ريزر'] },
+    { img: 'https://i.ibb.co/D3qSh41/images-5.jpg', title: 'بطاقات بلايستيشن', desc: 'ستور سعودي وإماراتي', price: 'PRT', cat: 'cards', keywords: ['بلايستيشن', 'ستور بلايستيشن', 'بلايستيشن سعودي', 'كروت سوني', 'playstation', 'psn'] },
+    { img: 'https://i.ibb.co/LXW6h1x0/images-6.jpg', title: 'بطاقات إكس بوكس', desc: 'شحن رصيد لايف', price: 'PRT', cat: 'cards', keywords: ['اكس بوكس', 'xbox', 'رصيد لايف', 'بطاقة اكس بوكس'] },
+    { img: 'https://i.ibb.co/kV1p4FmZ/images-3.png', title: 'بطاقات ستيم', desc: 'شحن محفظة Steam', price: 'PRT', cat: 'cards', keywords: ['ستيم', 'محفظة ستيم', 'العاب ستيم', 'steam card'] },
+    { img: 'https://i.ibb.co/Rp1tHZkt/images-4.png', title: 'بطاقات أمازون', desc: 'تسوق أونلاين', price: 'PRT', cat: 'cards', keywords: ['امازون', 'كارت امازون', 'تسوق امازون', 'amazon'] }, 
+    { img: 'https://i.ibb.co/zKg43VQ/image.png', title: 'بطاقات اسياسيل', desc: 'شحن رصيد اسياسيل', price: 'PRT', cat: 'cards', keywords: ['اسياسيل', 'رصيد اسيا', 'كارت اسيا', 'asiacell'] }, 
+    { img: 'https://i.ibb.co/hF8dKHqt/unnamed-4.webp', title: 'بطاقات اثير', desc: 'شحن رصيد اثير', price: 'PRT', cat: 'cards', keywords: ['اثير', 'زين اثير', 'رصيد اثير', 'زين عراق'] }, 
+    { img: 'https://i.ibb.co/cX2x6mSp/images-5.png', title: 'بطاقات فودافون كاش', desc: 'شحن رصيد فودافون كاش', price: 'PRT', cat: 'cards', keywords: ['فودافون كاش', 'فودافون', 'vodafone cash'] }, 
+    { img: 'https://i.ibb.co/tTFPFHL1/images-6.png', title: 'بطاقات STC pay', desc: 'شحن رصيد STC', price: 'PRT', cat: 'cards', keywords: ['اس تي سي', 'stc pay', 'stc', 'رصيد السعودية'] }
+];
+
+function initSearchPage() {
+    const resultsContainer = document.getElementById('searchResults');
+    resultsContainer.innerHTML = `
+        <div class="no-results">
+            <i class="fas fa-search-plus" style="font-size: 32px; color: rgba(255,255,255,0.1); margin-bottom: 12px;"></i>
+            <p>ابدأ بكتابة أي شيء تبحث عنه في المتجر..<br><span style="font-size:11px; color:#555;">مثال: شدات، رشق، تليجرام، أمريكا، بطاقات</span></p>
+        </div>`;
+}
+
+window.onload = initSearchPage;
+
+function performLiveSearch() {
+    const query = document.getElementById('searchInput').value.toLowerCase().trim();
+    const resultsContainer = document.getElementById('searchResults');
+    const clearBtn = document.getElementById('clearBtn');
+
+    if (query === "") {
+        clearSearch();
+        return;
+    }
+
+    clearBtn.style.display = "block";
+    resultsContainer.innerHTML = ""; 
+
+    let matchesFound = 0;
+
+    servicesDatabase.forEach(service => {
+        const matchTitle = service.title.toLowerCase().includes(query);
+        const matchDesc = service.desc.toLowerCase().includes(query);
+        const matchKeywords = service.keywords ? service.keywords.some(keyword => keyword.toLowerCase().includes(query)) : false;
+
+        if (matchTitle || matchDesc || matchKeywords) {
+            matchesFound++;
+
+            const card = document.createElement('div');
+            card.className = 'category-row-card';
+            
+            card.innerHTML = `
+                <div class="category-icon-box">
+                    <img src="${service.img}" alt="${service.title}">
+                </div>
+                <div class="category-info">
+                    <h3>${service.title}</h3>
+                    <p>${service.desc}</p>
+                </div>
+                <div class="item-price-tag">${service.price}</div>
+                <div class="arrow-indicator">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+            `;
+
+            // آلية التوجيه الاحترافية المتكاملة مع ملفات الدفع الفرعية
+            card.onclick = () => {
+                const targetFile = catConfig[service.cat] ? catConfig[service.cat].file : 'Games.html';
+                
+                const params = new URLSearchParams();
+                params.append('name', service.title);
+                params.append('img', service.img);
+                params.append('game', service.key || 'default');
+
+                window.location.href = `${targetFile}?${params.toString()}`;
+            };
+
+            resultsContainer.appendChild(card);
+        }
+    });
+
+    if (matchesFound === 0) {
+        resultsContainer.innerHTML = `
+            <div class="no-results">
+                لم نجد نتائج مخصصة لـ "<span>${query}</span>"<br>
+                تأكد من كتابة أحرف صحيحة أو ابحث بكلمة عامة أخرى.
+            </div>`;
+    }
+}
+
+function clearSearch() {
+    document.getElementById('searchInput').value = "";
+    document.getElementById('clearBtn').style.display = "none";
+    initSearchPage();
+    document.getElementById('searchInput').focus();
+}
+</script>
+
+<script src="main.js"></script>
+</body>
+</html>

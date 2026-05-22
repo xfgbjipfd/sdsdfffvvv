@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <title>Skypost | شحن الرصيد</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .payment-options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding: 20px 15px;
+        }
+
+        .payment-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .payment-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+        }
+
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-soft);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--accent);
+        }
+
+        .payment-details h3 {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .payment-details p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .usdt-color { color: #26a17b !important; } /* لون الـ USDT المميز */
+        .stars-color { color: #ffcc00 !important; } /* لون نجوم تيليجرام */
+        .local-color { color: #007bff !important; } /* لون مميز لطرق الدفع المحلية */
+
+        .page-header-simple {
+            text-align: center;
+            padding: 30px 10px 10px;
+        }
+
+        .page-header-simple h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="main-layout">
+        <header class="top-nav-brand">
+            
+            <div class="brand-small">Sky<span>post</span></div>
+            <div style="width: 38px;"></div> </header>
+
+        <div class="page-header-simple">
+            <h1>شحن رصيد المحفظة</h1>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px;">اختر وسيلة الدفع المناسبة لك</p>
+        </div>
+
+        <main class="payment-options-container">
+            
+            <a href="usdt-pay.html" class="payment-card">
+                <div class="payment-icon">
+                    <i class="fas fa-coins usdt-color"></i>
+                </div>
+                <div class="payment-details">
+                    <h3>الدفع عبر USDT (TRC20)</h3>
+                    <p>إيداع آلي سريع عبر العملات الرقمية</p>
+                </div>
+                <div style="margin-right: auto; color: var(--border);">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+            </a>
+
+            <a href="stars-pay.html" class="payment-card">
+                <div class="payment-icon">
+                    <i class="fas fa-star stars-color"></i>
+                </div>
+                <div class="payment-details">
+                    <h3>نجوم تيليجرام (Stars)</h3>
+                    <p>دفع مباشر عبر تطبيق تيليجرام</p>
+                </div>
+                <div style="margin-right: auto; color: var(--border);">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+            </a>
+
+            <a href="local-pay.html" class="payment-card">
+                <div class="payment-icon">
+                    <i class="fas fa-credit-card local-color"></i>
+                </div>
+                <div class="payment-details">
+                    <h3>طرق دفع محلية</h3>
+                    <p>إيداع بطرق دفع محلية</p>
+                </div>
+                <div style="margin-right: auto; color: var(--border);">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+            </a>
+
+        </main>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="https://t.me/Skybo_sub" class="sp-back-link">
+                <i class="fas fa-question-circle"></i> هل تواجه مشكلة في الشحن؟
+            </a>
+        </div>
+    </div>
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    const tg = window.Telegram?.WebApp;
+
+    if (tg && tg.BackButton) {
+        tg.BackButton.show();
+
+        tg.BackButton.onClick(() => {
+            tg.BackButton.hide();
+            window.location.href = "index.html"; // غيّرها للصفحة المطلوبة
+        });
+    }
+});
+</script> 
+
+
+    <script src="main.js"></script>
+</body>
+</html>
